@@ -1,0 +1,31 @@
+{
+  "name": "loupsell-new",
+  "version": "1.0.0",
+  "main": "web/index.js",
+  "license": "UNLICENSED",
+  "scripts": {
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy",
+    "logout": "shopify logout"
+  },
+  "dependencies": {
+
+    "@shopify/cli": "^3.84.2",
+    "@shopify/ui-extensions": "2025.4.0",
+    "@shopify/ui-extensions-react": "2025.4.0",
+    "react": "^18.3.1",
+    "react-reconciler": "0.29.0"
+  },
+  "author": "ab",
+  "devDependencies": {
+    "eslint": "^8.30.0",
+    "eslint-plugin-react": "^7.31.11"
+  },
+  "overrides": {
+    "@types/react": "17.0.30"
+  }
+}

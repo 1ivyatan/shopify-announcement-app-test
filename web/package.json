@@ -1,0 +1,46 @@
+{
+  "name": "shopify-app-template-node",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "debug": "node --inspect-brk --import tsx index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --exec tsx index.ts --ignore ./frontend",
+    "serve": "cross-env NODE_ENV=production tsx index.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=14.13.1"
+  },
+  "dependencies": {
+    "@sentry/node": "^8.47.0",
+    "@sentry/profiling-node": "^8.47.0",
+    "@shopify/shopify-app-express": "^5.0.10",
+    "@shopify/shopify-app-session-storage-mongodb": "4.0.7",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.1",
+    "isomorphic-fetch": "^3.0.0",
+    "libautech-backend": "^1.7.4",
+    "mongoose": "^8.7.1",
+    "node-cron": "^3.0.2",
+    "openai": "^6.2.0",
+    "serve-static": "^1.15.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "@types/node-cron": "^3.0.11",
+    "@types/serve-static": "^2.2.0",
+    "@types/uuid": "^10.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.2",
+    "pretty-quick": "^3.1.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

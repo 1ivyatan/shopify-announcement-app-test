@@ -1,0 +1,44 @@
+# Environment Configuration
+.env
+.env.*
+
+# Dependency directory
+node_modules
+
+# Test coverage directory
+coverage
+
+# Ignore Apple macOS Desktop Services Store
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# ngrok tunnel file
+config/tunnel.pid
+
+# vite build output
+dist/
+
+# extensions build output
+extensions/*/build
+
+# Node library SQLite database
+web/database.sqlite
+
+# Custom deploy script on server
+ZEPLOY.md
+productCache.json
+stats.html
+
+.vscode
+.shopify/
+.vscode/
+
+vite.config.js.timestamp-*
+
+# Shopify app config files (except staging and prod)
+shopify.app.*.toml
+!shopify.app.staging.toml
+!shopify.app.prod.toml

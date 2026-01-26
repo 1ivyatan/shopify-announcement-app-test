@@ -1,0 +1,18 @@
+name: Block FIXME on PR to prod
+
+on:
+  pull_request:
+    branches:
+      - prod
+
+jobs:
+  check-fixme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for FIXME in diff
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}...HEAD | grep "FIXME" && exit 1 || exit 0

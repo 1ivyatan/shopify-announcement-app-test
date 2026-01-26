@@ -1,0 +1,23 @@
+{
+    "name": "translation-updater",
+    "version": "1.0.0",
+    "description": "Parallel translation updater using OpenAI",
+    "main": "update_translations.js",
+    "scripts": {
+        "start": "node update_translations.js",
+        "dev": "node update_translations.js"
+    },
+    "dependencies": {
+        "openai": "^4.0.0",
+        "chalk": "^4.1.2",
+        "dotenv": "^16.0.0"
+    },
+    "keywords": [
+        "translation",
+        "i18n",
+        "openai",
+        "parallel"
+    ],
+    "author": "",
+    "license": "ISC"
+}

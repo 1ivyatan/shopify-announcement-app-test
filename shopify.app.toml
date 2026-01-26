@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "982274ecb595825fd78c0025cccfc4d9"
+name = "Upsell Upgrade"
+handle = "upsell-upgrade"
+application_url = "https://beth-tennessee-niagara-wherever.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2024-07"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_discounts,read_draft_orders,read_orders,read_products,read_themes,unauthenticated_read_product_tags,write_discounts,write_draft_orders,write_orders,write_products,write_script_tags,write_themes"
+
+[auth]
+redirect_urls = [
+  "https://beth-tennessee-niagara-wherever.trycloudflare.com/auth/callback",
+  "https://beth-tennessee-niagara-wherever.trycloudflare.com/auth/shopify/callback",
+  "https://beth-tennessee-niagara-wherever.trycloudflare.com/api/auth/callback"
+]
+
+[app_proxy]
+url = "https://beth-tennessee-niagara-wherever.trycloudflare.com/proxy"
+subpath = "libautech-upsell"
+prefix = "apps"
+
+[pos]
+embedded = false

@@ -1,0 +1,68 @@
+{% # theme-check-disable UndefinedObject, LiquidTag, MissingTemplate %}
+{% assign meta = app.metafields.libautech_leons %}
+{% assign s = shop.permanent_domain %}
+{% capture should_render %}
+{% render 'should-render', meta: meta, shop: s %}
+{% endcapture %}
+{% assign should_render = should_render | strip_html | strip %}
+
+
+{% render 'logUtils' %}
+{% render 'prepareScript' %}
+
+
+<script>
+  console.log(
+    '%cLibautech TEMP FBT extension: v1.0.0 - {{ should_render }}',
+    'font-size: 16px; color: #806FBF; background: #fff; border-radius:4px; padding: 0 2px; font-weight: bold;'
+  );
+
+  (async () => {
+    const code = await window.TSUFFIX_loadCode();
+    window.TSUFFIXSendLog({
+      level: 'info',
+      type: 'block_enabled',
+      message: 'FBT block loaded',
+      properties: {
+        should_render: {{ should_render | json }},
+  code_version: code.version,
+    code_source: code.source
+      }
+    });
+  }) ()
+
+</script>
+<div id="TSUFFIX-block-target"></div>
+
+{% if should_render == 'true' or should_render == true %}
+<script>
+  window.TSUFFIXBlockInitReact = async function (data) {
+    window.TSUFFIXContext = window.TSUFFIXContext || {};
+    window.TSUFFIXContext['TSUFFIX-block-target'] = {
+      context: 'block',
+      data: {
+        //...
+      }
+    };
+    {% render 'gzippedScript' %}
+    {% render 'unZipAndExecuteScript' %}
+  }
+  window.TSUFFIXBlockInitReact();
+</script>
+{% render 'refreshCarts' %}
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "TEMP block",
+  "target": "section",
+  "enabled_on": {
+  "templates": ["product"]
+  },
+  "stylesheet": "index.css",
+  "settings": [
+
+  ]
+}
+{% endschema %}

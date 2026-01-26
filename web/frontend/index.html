@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Ensures that the UI is properly scaled in the Shopify Mobile app -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="shopify-api-key" content="%VITE_SHOPIFY_API_KEY%" />
+    <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
+
+    <script type="module">
+      if (!import.meta.env || !import.meta.env.PROD) {
+        // Because the base HTML is rendered in the server side, we need to manually embed the code to enable HMR in our
+        // code, so that the vite server is properly enabled to run HMR
+        const script = document.createElement("script");
+        script.setAttribute("type", "module");
+        script.setAttribute("src", "./dev_embed.js");
+        document.getElementsByTagName("head")[0].append(script);
+      }
+    </script>
+    <script type="text/javascript">
+      // Delayed chat loading
+      window.addEventListener("load", function () {
+        // Only load Crisp after everything else is ready
+        setTimeout(function () {
+          window.$crisp = [];
+          window.CRISP_WEBSITE_ID = "67564cfe-ea9d-4d77-a170-256732a673ef";
+
+          const s = document.createElement("script");
+          s.src = "https://client.crisp.chat/l.js";
+          s.async = 1;
+          document.head.appendChild(s);
+
+          console.log(shopify);
+
+          // Set up Crisp data when it's ready
+          s.onload = function () {
+            if (window.userEmail) $crisp.push(["set", "user:email", [window.userEmail]]);
+            $crisp.push(["set", "user:nickname", [shopify.config.shop]]);
+            $crisp.push([
+              "set",
+              "session:data",
+              [
+                [
+                  ["app", "upsell-app"],
+                  ["shop", shopify.config.shop],
+                  ["email", shopify.config.email],
+                ],
+              ],
+            ]);
+          };
+        }, 2000); // 2 second delay - adjust as needed
+      });
+    </script>
+  </head>
+  <body>
+    <div id="app"><!--index.tsx injects App.tsx here--></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

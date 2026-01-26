@@ -1,0 +1,47 @@
+<script>
+    // Set widget from metafield (or null if doesn't exist)
+    {% if app.metafields.libautech_leons.code.value %}
+    window.TSUFFIX_RAW_CODE = {{ app.metafields.libautech_leons.code.value | json }};
+    window.TSUFFIX_CODE = window.TSUFFIX_RAW_CODE.code;
+    window.TSUFFIX_CODE_VERSION = window.TSUFFIX_RAW_CODE.version;
+    {% else %}
+    window.TSUFFIX_CODE = null;
+    window.TSUFFIX_CODE_VERSION = null;
+    {% endif %}
+
+    // Async function to load widget - returns instantly if metafield exists, fetches if not
+    window.TSUFFIX_loadCode = async function () {
+        if (window.TSUFFIX_CODE) {
+            console.debug("TSUFFIX: Using Libau widget from metafield", {
+                version: window.TSUFFIX_CODE_VERSION
+            });
+            // Metafield exists, return immediately
+            return {
+                code: window.TSUFFIX_CODE,
+                version: window.TSUFFIX_CODE_VERSION,
+                source: 'metafield'
+            };
+        }
+
+        console.debug("TSUFFIX: Libau widget not found in metafield, fetching from proxy...");
+
+        // No metafield, fetch from proxy
+        try {
+            const response = await fetch('/apps/libautech-upsell/widget');
+            if (!response.ok) throw new Error('Failed to fetch widget');
+
+            const code = await response.json();
+
+            window.TSUFFIX_CODE = code.code;
+
+            return {
+                code: code.code,
+                version: 'proxy', // Set to sentinel value 'proxy' to differentiate source
+                source: 'proxy'
+            };
+        } catch (error) {
+            console.error('Failed to load Libau widget:', error);
+            throw error;
+        }
+    };
+</script>

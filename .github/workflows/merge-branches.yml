@@ -1,0 +1,29 @@
+# .github/workflows/merge-branches.yml
+name: Main -> Staging
+
+on:
+  workflow_dispatch:  # Allows manual triggering from the GitHub Actions UI
+  
+permissions:
+  contents: write  # Ensure that the GITHUB_TOKEN has write access
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Ensure all branches and history are fetched
+
+      - name: Fetch all branches
+        run: git fetch origin +refs/heads/*:refs/remotes/origin/*
+
+      - name: Push changes to staging
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout staging || git checkout -b staging origin/staging
+          git merge main --no-ff
+          git push https://$GITHUB_ACTOR:${{ secrets.TOKEN }}@github.com/$GITHUB_REPOSITORY.git staging
+
