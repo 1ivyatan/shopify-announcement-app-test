@@ -10,53 +10,32 @@
 {% render 'logUtils' %}
 {% render 'prepareScript' %}
 
-<script>
-  console.log(
-    '%cLibautech TEMP Embed extension: v1.0.0 - {{ should_render }}',
-    'font-size: 16px; color: #806FBF; background: #fff; border-radius:4px; padding: 0 2px; font-weight: bold;'
-  );
+{% assign ann = meta.announcementBar %}
 
-  (async () => {
-    const code = await window.TSUFFIX_loadCode();
-    window.TSUFFIXSendLog({
-      level: 'info',
-      type: 'embed_enabled',
-      message: 'Embed block loaded',
-      properties: {
-        should_render: {{ should_render | json }},
-  code_version: code.version,
-    code_source: code.source
-      }
-    });
-  }) ()
-</script>
+{% if ann.value.enabled == 'true' or ann.value.enabled == true %}
+  
+<div id="TSUFFIX-embed-target">
+  <div 
+    className="TSUFFIX-tw-scopeTSUFFIX-announcement-bar" 
+    style="width: 100%;background-color: {{ block.settings.bar_backgroundcolor  }} ;color: {{ block.settings.bar_foregroundcolor  }};padding: 0.5em 1em;font-size: {{ block.settings.bar_fontsize  }}pt;line-height: 1em;display: flex;align-items: center;justify-content: center;    ">
+    {{ ann.value.text }}
+  </div>  
+</div>
 
+{% endif %}
 
-<div id="TSUFFIX-embed-target"></div>
 
 {% if should_render == 'true' or should_render == true %}
-<script>
-  window.TSUFFIXEmbedInitReact = async function (data) {
-    window.TSUFFIXContext = window.TSUFFIXContext || {};
-    window.TSUFFIXContext['TSUFFIX-embed-target'] = {
-      context: 'embed',
-      data: {
-        //...
-      }
-    };
-    {% render 'gzippedScript' %}
-    {% render 'unZipAndExecuteScript' %}
-  }
-  window.TSUFFIXEmbedInitReact();
-</script>
+
 {% render 'refreshCarts' %}
 {% endif %}
 
 {% schema %}
 {
-"name": "TEMP embed",
+"name": "Announcement bar",
 "target": "head",
 "stylesheet": "index.css",
-"settings": []
+"settings": [
+]
 }
 {% endschema %}

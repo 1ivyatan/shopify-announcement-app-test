@@ -5,6 +5,7 @@ import {
   mantleCancelPlanEndpoint,
   getPlansFromManager,
   getThemeId,
+  setMetafield,
 } from "libautech-backend";
 import { MantleClient } from "libautech-backend/src/singletons.js";
 import { determineFinalPlan } from "libautech-backend";
@@ -13,6 +14,33 @@ import { checkAndPopulateShopSettings } from "../utils/graphUtils.js";
 import SettingsSchema from "../schemas/SettingsSchema.js";
 
 const router: Router = express.Router();
+
+router.post("/announcement", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+  const { enabled, text } = _req.body ?? {};
+
+  if (enabled == null) {
+    return res.status(400).send({error: "No 'enabled' toggle"});
+  } else {
+    if (enabled) {
+      if (text == null) {
+        return res.status(400).send({error: "No 'text' field"});
+      }
+
+      await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text }), "json");
+    } else {
+      await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled }), "json");
+    }
+  }
+
+  return res.status(200).send({
+    success: true
+  });
+});
 
 router.get("/", async (_req: Request, res: Response) => {
   console.time("Shop");
@@ -99,3 +127,4 @@ router.get("/product-tags", async (_req: Request, res: Response) => {
 router.post("/cancel", mantleCancelPlanEndpoint);
 
 export default router;
+

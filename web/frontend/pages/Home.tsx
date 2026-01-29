@@ -1,25 +1,55 @@
 // Modules
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 // Shopify
 import { useAppBridge } from "@shopify/app-bridge-react";
 // Pages
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Page } from "@shopify/polaris";
-import { FooterNew } from "libautech-frontend";
-import { toggleCrisp } from "../utils/miscUtils";
-import { footerIcon } from "../assets";
-
-//
-import { ExtensionPreview } from "../shared/index";
+import { Button, Card, Checkbox, Form, FormLayout, Page, TextField, Text } from "@shopify/polaris";
 
 // Start of component
 export default function Home(): React.ReactElement {
-  // Core
+  // shopify
   const shopify = useAppBridge();
-  // State
   const { fetching: shopInfoFetching } = useShopInfoStore();
+
+  // form
+  const [announcementText, setannouncementText] = useState<string>('');
+  const [announcementBarOn, setAnnouncementBarOn] = useState<boolean>(false);
+  
+  const handleAnnouncementTextChange = useCallback((value: string) => setannouncementText(value), []);
+  const handleAnnouncementBarOnChange = useCallback(
+    (newChecked: boolean) => setAnnouncementBarOn(newChecked),
+    [],
+  );
+
+  const handleSubmit = useCallback(async () => {
+    if (announcementBarOn == null) {
+      console.log("no");
+      return;
+    }
+
+    let reqBody = JSON.stringify({});
+
+    if (announcementBarOn) {
+      reqBody = JSON.stringify({
+        enabled: announcementBarOn,
+        text: announcementText
+       })
+    } else {
+      reqBody = JSON.stringify({
+        enabled: announcementBarOn
+       })
+    }
+
+    const response = await fetch("/api/shop/announcement", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+       body: reqBody
+    });
+    console.log(await response.json())
+  }, []);
 
   // Effects
   useEffect(() => {
@@ -32,14 +62,39 @@ export default function Home(): React.ReactElement {
   ) : (
     <>
       <Page fullWidth>
-        Yo gang
-        <ExtensionPreview contextData={{}} />
-        <FooterNew
-          toggleSupportActive={toggleCrisp}
-          appIcon={footerIcon}
-          appName={"Smart Upsell"}
-          app={"add-upsell-cross-sell"}
-        />
+        <Card>
+          <Form onSubmit={handleSubmit}>
+            <FormLayout>
+              <Checkbox
+                label="Enabled"
+                checked={announcementBarOn}
+                onChange={handleAnnouncementBarOnChange}
+                helpText={
+                  <span>Show or hide the announcement bar</span>
+                }
+              />
+              
+              <TextField
+                value={announcementText}
+                onChange={handleAnnouncementTextChange}
+                label="Text"
+                type="text"
+                autoComplete="off"
+                disabled={!announcementBarOn}
+                helpText={
+                  <span>This text will appear at the top of the store page.</span>
+                }
+              />
+
+              
+              <Text variant="bodyMd" as="p">
+                Only works in embed editor :DDDD
+              </Text>
+
+              <Button submit={true} variant="primary">Save</Button>
+            </FormLayout>
+          </Form>
+        </Card>
       </Page>
     </>
   );
