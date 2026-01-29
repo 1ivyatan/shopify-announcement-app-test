@@ -12,8 +12,29 @@ import { determineFinalPlan } from "libautech-backend";
 import { checkAndPopulateShopSettings } from "../utils/graphUtils.js";
 // Schemas
 import SettingsSchema from "../schemas/SettingsSchema.js";
+import AnnouncementSchema from "../schemas/AnnouncementSchema.js";
+import { error } from "console";
 
 const router: Router = express.Router();
+
+
+router.get("/announcement", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+
+  const ann = await AnnouncementSchema.findOne({"shop": shop}).exec();
+
+  return res.status(200).send({
+    data: {
+      enabled: ann?.enabled,
+      text: ann?.text
+    },
+    success: true
+  });
+});
 
 router.post("/announcement", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
@@ -21,25 +42,24 @@ router.post("/announcement", async (_req: Request, res: Response) => {
   const client = new shopify.api.clients.Graphql({
     session,
   });
+
   const { enabled, text } = _req.body ?? {};
 
-  if (enabled == null) {
-    return res.status(400).send({error: "No 'enabled' toggle"});
-  } else {
-    if (enabled) {
-      if (text == null) {
-        return res.status(400).send({error: "No 'text' field"});
-      }
-
-      await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text }), "json");
-    } else {
-      await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled }), "json");
-    }
+  if (enabled == null || text == null) {
+    return res.status(401).send({
+      error: "all body params not supplied"
+    });
   }
 
-  return res.status(200).send({
-    success: true
-  });
+  try {
+    await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text }), "json");
+    await AnnouncementSchema.findOneAndUpdate({"shop": shop}, { enabled: enabled, text: text}, { new: true, upsert: true });
+    return res.status(200).send({
+      success: true
+    }); 
+  } catch (error) {
+    return res.status(500).send({error: "Server error"});
+  }
 });
 
 router.get("/", async (_req: Request, res: Response) => {

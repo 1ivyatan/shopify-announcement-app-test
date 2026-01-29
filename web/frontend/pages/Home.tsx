@@ -17,44 +17,54 @@ export default function Home(): React.ReactElement {
   // form
   const [announcementText, setannouncementText] = useState<string>('');
   const [announcementBarOn, setAnnouncementBarOn] = useState<boolean>(false);
+  const [enabledSubmit, setEnabledSubmit] = useState<boolean>(false);
   
-  const handleAnnouncementTextChange = useCallback((value: string) => setannouncementText(value), []);
+  const handleAnnouncementTextChange = useCallback((value: string) => {
+    setannouncementText(value)
+  }, []);
   const handleAnnouncementBarOnChange = useCallback(
-    (newChecked: boolean) => setAnnouncementBarOn(newChecked),
+    (newChecked: boolean) => {
+      setAnnouncementBarOn(newChecked)
+    },
     [],
   );
 
+  const fetchAnnouncement = useCallback(async () => {
+    const response = await fetch("/api/shop/announcement");
+    const json = await response.json();
+
+    setAnnouncementBarOn(json.data.enabled);
+    setannouncementText(json.data.text);
+    setEnabledSubmit(true);
+  }, []);
+
   const handleSubmit = useCallback(async () => {
-    if (announcementBarOn == null) {
-      console.log("no");
+    setEnabledSubmit(false);
+
+    if (announcementBarOn == null || (announcementBarOn && announcementText.trim().length == 0)) {
+      setEnabledSubmit(true);
       return;
-    }
-
-    let reqBody = JSON.stringify({});
-
-    if (announcementBarOn) {
-      reqBody = JSON.stringify({
-        enabled: announcementBarOn,
-        text: announcementText
-       })
-    } else {
-      reqBody = JSON.stringify({
-        enabled: announcementBarOn
-       })
     }
 
     const response = await fetch("/api/shop/announcement", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-       body: reqBody
+       body: JSON.stringify({
+        enabled: announcementBarOn,
+        text: announcementText
+       })
     });
+
+    setEnabledSubmit(true);
     console.log(await response.json())
-  }, []);
+  }, [announcementBarOn, announcementText]);
 
   // Effects
   useEffect(() => {
     shopify.loading(shopInfoFetching);
+    fetchAnnouncement();
   }, [shopInfoFetching, shopify]);
+
 
   const isLoading: boolean = shopInfoFetching;
   const pageMarkup: React.ReactElement = isLoading ? (
@@ -86,12 +96,7 @@ export default function Home(): React.ReactElement {
                 }
               />
 
-              
-              <Text variant="bodyMd" as="p">
-                Only works in embed editor :DDDD
-              </Text>
-
-              <Button submit={true} variant="primary">Save</Button>
+              <Button submit={true} variant="primary" disabled={( enabledSubmit && announcementText.trim().length == 0 )}>Save</Button>
             </FormLayout>
           </Form>
         </Card>
