@@ -30,7 +30,10 @@ router.get("/announcement", async (_req: Request, res: Response) => {
   return res.status(200).send({
     data: {
       enabled: ann?.enabled,
-      text: ann?.text
+      text: ann?.text,
+      fgColor: ann?.fgColor,
+      bgColor: ann?.bgColor,
+      fontSize: ann?.fontSize
     },
     success: true
   });
@@ -43,7 +46,7 @@ router.post("/announcement", async (_req: Request, res: Response) => {
     session,
   });
 
-  const { enabled, text } = _req.body ?? {};
+  const { enabled, text, fgColor, bgColor, fontSize } = _req.body ?? {};
 
   if (enabled == null || text == null) {
     return res.status(401).send({
@@ -52,8 +55,10 @@ router.post("/announcement", async (_req: Request, res: Response) => {
   }
 
   try {
-    await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text }), "json");
-    await AnnouncementSchema.findOneAndUpdate({"shop": shop}, { enabled: enabled, text: text}, { new: true, upsert: true });
+    await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
+    await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
+      { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
+    , { new: true, upsert: true });
     return res.status(200).send({
       success: true
     }); 

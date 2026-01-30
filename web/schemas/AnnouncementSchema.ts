@@ -15,6 +15,15 @@ export const AnnouncementSchema = new Schema({
   },
   text: {
     type: String
+  },
+  fgColor: {
+    type: String
+  },
+  bgColor: {
+    type: String
+  },
+  fontSize: {
+    type: Number
   }
 });
 
