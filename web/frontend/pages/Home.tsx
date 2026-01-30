@@ -6,7 +6,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Button, Card, Checkbox, Form, FormLayout, Page, TextField, Text, Layout, InlineGrid } from "@shopify/polaris";
+import { Button, Card, Checkbox, Form, FormLayout, Page, TextField, Text, Layout, InlineGrid, Banner, BannerTone } from "@shopify/polaris";
 
 // Start of component
 export default function Home(): React.ReactElement {
@@ -64,6 +64,9 @@ export default function Home(): React.ReactElement {
 
     if (announcementBarOn == null || (announcementBarOn && announcementText.trim().length == 0)) {
       setEnabledSubmit(true);
+      setInfoBannerTone("warning");
+      setInfoBannerMessage("You must enter text!");
+      setActiveInfoBanner(true);
       return;
     }
 
@@ -79,9 +82,23 @@ export default function Home(): React.ReactElement {
        })
     });
 
+    if (response.ok) {
+      setInfoBannerMessage("Success!");
+      setInfoBannerTone("success");
+      
+    } else {
+      setInfoBannerTone("critical");
+      setInfoBannerMessage("Something went wrong in the server saving the banner!");
+      console.log(response)
+    }
+
+    setActiveInfoBanner(true);
     setEnabledSubmit(true);
-    console.log(await response.json())
   }, [announcementBarOn, announcementText, fgColorHex, bgColorHex, fontSize]);
+
+  const [activeInfoBanner, setActiveInfoBanner] = useState<boolean>(false);
+  const [infoBannerMessage, setInfoBannerMessage] = useState<string>("");
+  const [infoBannerTone, setInfoBannerTone] = useState<BannerTone>("info");
 
   // Effects
   useEffect(() => {
@@ -89,6 +106,8 @@ export default function Home(): React.ReactElement {
     fetchAnnouncement();
   }, [shopInfoFetching, shopify]);
 
+  const infoBanner = 
+    activeInfoBanner ? <Banner title={infoBannerMessage} tone={infoBannerTone} onDismiss={() => { setActiveInfoBanner(false) }}></Banner> : <></>;
 
   const isLoading: boolean = shopInfoFetching;
   const pageMarkup: React.ReactElement = isLoading ? (
@@ -97,6 +116,7 @@ export default function Home(): React.ReactElement {
     <>
       <Page fullWidth>
         <Card>
+          {infoBanner}
           <Form onSubmit={handleSubmit}>
             <FormLayout>
               <Checkbox
