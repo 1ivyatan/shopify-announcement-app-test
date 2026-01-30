@@ -1,100 +1,100 @@
 # FBT Default -
 
-- .TSUFFIX-fbt-widget
-  - .TSUFFIX-widget-header
-    - .TSUFFIX-widget-title
-    - .TSUFFIX-widget-subtitle
-  - .TSUFFIX-widget-container
-    - .TSUFFIX-widget-top-content
-      - .TSUFFIX-images-section
-      - .TSUFFIX-total-price-and-add-to-cart-section
-        - .TSUFFIX-product-total-price-section
-        - .TSUFFIX-add-to-cart-button
-    - .TSUFFIX-product-list
-      - .TSUFFIX-product-row
-        - .TSUFFIX-product-info
-          - .TSUFFIX-product-checkbox
-          - .TSUFFIX-product-title-section
-            - .TSUFFIX-product-title
-            - .TSUFFIX-variant-select-section
-              - .TSUFFIX-variant-select
-            - .TSUFFIX-product-price-section
+- .LBTANN-fbt-widget
+  - .LBTANN-widget-header
+    - .LBTANN-widget-title
+    - .LBTANN-widget-subtitle
+  - .LBTANN-widget-container
+    - .LBTANN-widget-top-content
+      - .LBTANN-images-section
+      - .LBTANN-total-price-and-add-to-cart-section
+        - .LBTANN-product-total-price-section
+        - .LBTANN-add-to-cart-button
+    - .LBTANN-product-list
+      - .LBTANN-product-row
+        - .LBTANN-product-info
+          - .LBTANN-product-checkbox
+          - .LBTANN-product-title-section
+            - .LBTANN-product-title
+            - .LBTANN-variant-select-section
+              - .LBTANN-variant-select
+            - .LBTANN-product-price-section
 
 # FBT Bordered -
 
-- .TSUFFIX-fbt-widget.TSUFFIX-fbt-widget-bordered
-  - .TSUFFIX-widget-header
-    - .TSUFFIX-widget-title
-    - .TSUFFIX-widget-subtitle
-  - .TSUFFIX-widget-container
-    - .TSUFFIX-widget-top-content
-      - .TSUFFIX-images-section
-      - .TSUFFIX-total-price-and-collapse-section
-        - .TSUFFIX-total-price-section
-        - .TSUFFIX-collapse-button
-    - .TSUFFIX-product-list
-      - .TSUFFIX-product-row
-        - .TSUFFIX-product-info
-          - .TSUFFIX-product-checkbox
-          - .TSUFFIX-product-title-section
-            - .TSUFFIX-product-title
-            - .TSUFFIX-variant-select-section
-              - .TSUFFIX-variant-select
-            - .TSUFFIX-product-price-section
-    - .TSUFFIX-total-price-and-add-to-cart-section
-      - .TSUFFIX-total-price-section
-      - .TSUFFIX-add-to-cart-button
+- .LBTANN-fbt-widget.LBTANN-fbt-widget-bordered
+  - .LBTANN-widget-header
+    - .LBTANN-widget-title
+    - .LBTANN-widget-subtitle
+  - .LBTANN-widget-container
+    - .LBTANN-widget-top-content
+      - .LBTANN-images-section
+      - .LBTANN-total-price-and-collapse-section
+        - .LBTANN-total-price-section
+        - .LBTANN-collapse-button
+    - .LBTANN-product-list
+      - .LBTANN-product-row
+        - .LBTANN-product-info
+          - .LBTANN-product-checkbox
+          - .LBTANN-product-title-section
+            - .LBTANN-product-title
+            - .LBTANN-variant-select-section
+              - .LBTANN-variant-select
+            - .LBTANN-product-price-section
+    - .LBTANN-total-price-and-add-to-cart-section
+      - .LBTANN-total-price-section
+      - .LBTANN-add-to-cart-button
 
 # Product Addons -
 
-- .TSUFFIX-pa-widget
-  - .TSUFFIX-widget-header
-    - .TSUFFIX-widget-title
-    - .TSUFFIX-widget-subtitle
-  - .TSUFFIX-widget-container
-    - .TSUFFIX-product-list
-      - .TSUFFIX-product-addon-row
-        - .TSUFFIX-product-addon-row-image-section
-        - .TSUFFIX-product-title-and-variant-select-section
-          - .TSUFFIX-product-title
-          - .TSUFFIX-variant-select-section
-            - .TSUFFIX-variant-select
-        - .TSUFFIX-product-price-and-action-section
-          - .TSUFFIX-product-price-section
-          - .TSUFFIX-product-checkbox, .TSUFFIX-product-button-section
-            - .TSUFFIX-product-add-button
-            - .TSUFFIX-product-remove-button
+- .LBTANN-pa-widget
+  - .LBTANN-widget-header
+    - .LBTANN-widget-title
+    - .LBTANN-widget-subtitle
+  - .LBTANN-widget-container
+    - .LBTANN-product-list
+      - .LBTANN-product-addon-row
+        - .LBTANN-product-addon-row-image-section
+        - .LBTANN-product-title-and-variant-select-section
+          - .LBTANN-product-title
+          - .LBTANN-variant-select-section
+            - .LBTANN-variant-select
+        - .LBTANN-product-price-and-action-section
+          - .LBTANN-product-price-section
+          - .LBTANN-product-checkbox, .LBTANN-product-button-section
+            - .LBTANN-product-add-button
+            - .LBTANN-product-remove-button
 
 # Upsell Funnel -
 
-- .TSUFFIX-dialog-overlay
-- .TSUFFIX-uf-widget
-  - .TSUFFIX-uf-widget-product
-    - .TSUFFIX-dialog-header
-      - .TSUFFIX-dialog-close
-      - .TSUFFIX-widget-title
-      - .TSUFFIX-widget-subtitle
-    - .TSUFFIX-product-upsell-details
-      - .TSUFFIX-product-upsell-details-image
-      - .TSUFFIX-product-title-and-price-section
-        - .TSUFFIX-product-title
-        - .TSUFFIX-product-price-section
-    - .TSUFFIX-variant-select-section
-      - .TSUFFIX-variant-select
-    - .TSUFFIX-dialog-footer
-      - .TSUFFIX-product-accept-button
-      - .TSUFFIX-product-decline-button
+- .LBTANN-dialog-overlay
+- .LBTANN-uf-widget
+  - .LBTANN-uf-widget-product
+    - .LBTANN-dialog-header
+      - .LBTANN-dialog-close
+      - .LBTANN-widget-title
+      - .LBTANN-widget-subtitle
+    - .LBTANN-product-upsell-details
+      - .LBTANN-product-upsell-details-image
+      - .LBTANN-product-title-and-price-section
+        - .LBTANN-product-title
+        - .LBTANN-product-price-section
+    - .LBTANN-variant-select-section
+      - .LBTANN-variant-select
+    - .LBTANN-dialog-footer
+      - .LBTANN-product-accept-button
+      - .LBTANN-product-decline-button
 
 # Cart Addons -
 
-- .TSUFFIX-ca-widget
-  - .TSUFFIX-widget-container
-    - .TSUFFIX-dialog-header
-      - .TSUFFIX-dialog-close
-      - .TSUFFIX-widget-title
-      - .TSUFFIX-widget-subtitle
-    - .TSUFFIX-product-list
-      - .TSUFFIX-product-addon-row
+- .LBTANN-ca-widget
+  - .LBTANN-widget-container
+    - .LBTANN-dialog-header
+      - .LBTANN-dialog-close
+      - .LBTANN-widget-title
+      - .LBTANN-widget-subtitle
+    - .LBTANN-product-list
+      - .LBTANN-product-addon-row
         - ._._.
-    - .TSUFFIX-dialog-footer
-      - .TSUFFIX-product-continue-button
+    - .LBTANN-dialog-footer
+      - .LBTANN-product-continue-button

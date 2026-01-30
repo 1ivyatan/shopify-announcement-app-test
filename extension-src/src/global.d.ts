@@ -7,20 +7,20 @@ interface ContextData {
   data?: any;
 }
 
-interface TSUFFIXContext {
+interface LBTANNContext {
   [key: string]: ContextData;
 }
 
 
 declare global {
   interface Window {
-    TSUFFIXIsMobile: boolean; // Declare the custom property here
-    TSUFFIXRendered: any;
-    TSUFFIXContext: TSUFFIXContext;
-    TSUFFIXClickCheckout: () => void;
-    TSUFFIXShopify: any;
-    TSUFFIXFormatMoney: (cents: any, format: any) => string;
-    TSUFFIXIsPreview: boolean;
+    LBTANNIsMobile: boolean; // Declare the custom property here
+    LBTANNRendered: any;
+    LBTANNContext: LBTANNContext;
+    LBTANNClickCheckout: () => void;
+    LBTANNShopify: any;
+    LBTANNFormatMoney: (cents: any, format: any) => string;
+    LBTANNIsPreview: boolean;
     Shopify: any;
   }
 }

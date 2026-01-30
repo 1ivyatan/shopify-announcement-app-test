@@ -1,9 +1,9 @@
 # Libautech - TEMP app - [PR - Prod](https://github.com/Libautech/TEMP/compare/prod...main) [PR - Staging](https://github.com/Libautech/TEMP/compare/staging...main)
 
 # SETUP IMPORTANT!!!
-Replace project wide `TEMP` -> Apps name, no spaces, make sure to do case sensitive, keep it short this is what is used in libautech_XXX for conductor, and extensions etc
-Replace project wide `TSUFFIX` -> apps short form prefix, for upsell its lbtu, sticky is lbts, keep it lower case, search with case sensitive
 
+Replace project wide `TEMP` -> Apps name, no spaces, make sure to do case sensitive, keep it short this is what is used in libautech_XXX for conductor, and extensions etc
+Replace project wide `LBTANN` -> apps short form prefix, for upsell its lbtu, sticky is lbts, keep it lower case, search with case sensitive
 
 ## ENV structure, ish
 

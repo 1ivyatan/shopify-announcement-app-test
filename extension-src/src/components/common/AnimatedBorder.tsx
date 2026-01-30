@@ -41,7 +41,7 @@ export default function AnimatedBorder({
           backgroundRepeat: "no-repeat",
           backgroundPosition: "0 0",
           borderRadius: "inherit",
-          animation: `TSUFFIX-border-rotate ${speed}s linear infinite`,
+          animation: `LBTANN-border-rotate ${speed}s linear infinite`,
           zIndex: 0,
           display: "block",
         }}
@@ -61,7 +61,7 @@ export default function AnimatedBorder({
       />
       <style>
         {`
-          @keyframes TSUFFIX-border-rotate {
+          @keyframes LBTANN-border-rotate {
             100% { transform: translate(-50%, -50%) rotate(1turn); }
           }
         `}

@@ -22,7 +22,7 @@ function replaceRemWithEmAndPrefix() {
           if (cssAsset && typeof cssAsset.source === "string") {
             let cssContent = cssAsset.source;
             cssContent = cssContent.replace(/rem/g, "em");
-            const markerRegex = /\.TSUFFIX-every-class-after-this\s*\{\s*content:\s*"";\s*\}/;
+            const markerRegex = /\.LBTANN-every-class-after-this\s*\{\s*content:\s*"";\s*\}/;
             const markerMatch = cssContent.match(markerRegex);
 
             if (markerMatch) {
@@ -36,7 +36,7 @@ function replaceRemWithEmAndPrefix() {
                   if (trimmedLine.startsWith(".")) {
                     return line.replace(
                       /^\s*\./,
-                      (indent: string) => `${indent}TSUFFIX-tw-scope .`
+                      (indent: string) => `${indent}LBTANN-tw-scope .`
                     );
                   }
                   return line;

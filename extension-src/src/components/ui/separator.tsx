@@ -18,10 +18,10 @@ const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
   ({ className = "", orientation = "horizontal", decorative = true, ...props }, ref) => {
     // Combine class names
     const classNames = [
-      "TSUFFIX-shrink-0 TSUFFIX-block",
+      "LBTANN-shrink-0 LBTANN-block",
       orientation === "horizontal"
-        ? "TSUFFIX-h-[1px] TSUFFIX-w-full"
-        : "TSUFFIX-h-full TSUFFIX-w-[1px]",
+        ? "LBTANN-h-[1px] LBTANN-w-full"
+        : "LBTANN-h-full LBTANN-w-[1px]",
       className,
     ]
       .filter(Boolean)

@@ -30,7 +30,7 @@ export default function Modal({
   closeOnClickOutside = true,
   closeOnEsc = true,
   preventBodyScroll = true,
-  portalContainerClassName = " TSUFFIX-tw-scope TSUFFIX-custom-zindex ",
+  portalContainerClassName = " LBTANN-tw-scope LBTANN-custom-zindex ",
 }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -93,18 +93,18 @@ export default function Modal({
   return (
     <dialog
       ref={dialogRef}
-      className={`TSUFFIX-fixed TSUFFIX-inset-0 TSUFFIX-z-50 TSUFFIX-flex !TSUFFIX-bg-transparent backdrop:TSUFFIX-items-center backdrop:TSUFFIX-justify-center backdrop:TSUFFIX-bg-black/50 ${portalContainerClassName} ${rootClassName}`}
+      className={`LBTANN-fixed LBTANN-inset-0 LBTANN-z-50 LBTANN-flex !LBTANN-bg-transparent backdrop:LBTANN-items-center backdrop:LBTANN-justify-center backdrop:LBTANN-bg-black/50 ${portalContainerClassName} ${rootClassName}`}
       style={rootStyle}
       onCancel={handleCancel}
       onClick={handleDialogClick}
     >
       <div
-        className={`TSUFFIX-bg-white TSUFFIX-w-full TSUFFIX-rounded TSUFFIX-shadow-lg TSUFFIX-relative TSUFFIX-overflow-hidden ${containerClassName}`}
+        className={`LBTANN-bg-white LBTANN-w-full LBTANN-rounded LBTANN-shadow-lg LBTANN-relative LBTANN-overflow-hidden ${containerClassName}`}
         style={{ maxWidth, ...containerStyle }}
       >
         <button
           onClick={onClose}
-          className="TSUFFIX-z-20 TSUFFIX-absolute TSUFFIX-p-2 TSUFFIX-top-2 TSUFFIX-right-2 TSUFFIX-rounded-full TSUFFIX-flex TSUFFIX-items-center TSUFFIX-justify-center"
+          className="LBTANN-z-20 LBTANN-absolute LBTANN-p-2 LBTANN-top-2 LBTANN-right-2 LBTANN-rounded-full LBTANN-flex LBTANN-items-center LBTANN-justify-center"
           style={{ color: containerStyle.color, ...closeButtonStyle }}
           aria-label="Close"
           type="button"

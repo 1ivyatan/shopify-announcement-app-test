@@ -31,7 +31,7 @@ export default function Divider({
   };
 
   return (
-    <div className={`TSUFFIX-flex-shrink-0 ${className}`} style={styles}>
+    <div className={`LBTANN-flex-shrink-0 ${className}`} style={styles}>
       <div />
     </div>
   );

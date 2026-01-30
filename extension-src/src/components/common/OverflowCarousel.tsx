@@ -160,13 +160,13 @@ export default function OverflowCarousel({
   }, [scrollPrevRef, scrollNextRef, manualControls]);
 
   return (
-    <div className={`TSUFFIX-overflow-carousel TSUFFIX-relative TSUFFIX-w-full ${className}`}>
+    <div className={`LBTANN-overflow-carousel LBTANN-relative LBTANN-w-full ${className}`}>
       {" "}
       {/* Carousel container */}
       <div
         ref={scrollContainerRef}
-        className={`TSUFFIX-flex TSUFFIX-overflow-x-auto TSUFFIX-scrollbar-hide TSUFFIX-snap-x TSUFFIX-px-2 TSUFFIX-min-h-0 TSUFFIX-relative TSUFFIX-overflow-visible ${
-          !showControls ? "TSUFFIX-justify-center" : ""
+        className={`LBTANN-flex LBTANN-overflow-x-auto LBTANN-scrollbar-hide LBTANN-snap-x LBTANN-px-2 LBTANN-min-h-0 LBTANN-relative LBTANN-overflow-visible ${
+          !showControls ? "LBTANN-justify-center" : ""
         } ${idkAnymoreClassName}`}
         style={{
           gap: presetDetails?.offerItemGap + "px" || "8px",
@@ -182,7 +182,7 @@ export default function OverflowCarousel({
         {/* Apply snap-center to each child */}
         {React.Children.map(children, (child) => (
           <div
-            className={`TSUFFIX-flex-none TSUFFIX-snap-center !TSUFFIX-max-w-none ${childContainerClassName}`}
+            className={`LBTANN-flex-none LBTANN-snap-center !LBTANN-max-w-none ${childContainerClassName}`}
           >
             {child}
           </div>
@@ -193,35 +193,35 @@ export default function OverflowCarousel({
         <>
           <button
             onClick={scrollPrev}
-            className={`TSUFFIX-absolute TSUFFIX-left-0 TSUFFIX-top-1/2 TSUFFIX--translate-y-1/2 TSUFFIX-bg-white TSUFFIX-rounded-full TSUFFIX-p-2 TSUFFIX-shadow-lg TSUFFIX-z-10 TSUFFIX-transition-all TSUFFIX-duration-200 hover:TSUFFIX-bg-gray-50 TSUFFIX-border TSUFFIX-border-gray-200 ${
+            className={`LBTANN-absolute LBTANN-left-0 LBTANN-top-1/2 LBTANN--translate-y-1/2 LBTANN-bg-white LBTANN-rounded-full LBTANN-p-2 LBTANN-shadow-lg LBTANN-z-10 LBTANN-transition-all LBTANN-duration-200 hover:LBTANN-bg-gray-50 LBTANN-border LBTANN-border-gray-200 ${
               scrollPosition <= 16
                 ? hideIfUnclickable && !wrapScroll
-                  ? " TSUFFIX-hidden "
-                  : " TSUFFIX-opacity-40 TSUFFIX-cursor-not-allowed "
-                : " TSUFFIX-opacity-100 hover:TSUFFIX-scale-105 "
+                  ? " LBTANN-hidden "
+                  : " LBTANN-opacity-40 LBTANN-cursor-not-allowed "
+                : " LBTANN-opacity-100 hover:LBTANN-scale-105 "
             }`}
             disabled={!wrapScroll && scrollPosition <= 16}
             aria-label="Scroll left"
             role="button"
             type="button"
           >
-            <ChevronLeft className="TSUFFIX-h-5 TSUFFIX-w-5 TSUFFIX-text-gray-700" />
+            <ChevronLeft className="LBTANN-h-5 LBTANN-w-5 LBTANN-text-gray-700" />
           </button>
           <button
             onClick={scrollNext}
-            className={`TSUFFIX-absolute TSUFFIX-right-0 TSUFFIX-top-1/2 TSUFFIX--translate-y-1/2 TSUFFIX-bg-white TSUFFIX-rounded-full TSUFFIX-p-2 TSUFFIX-shadow-lg TSUFFIX-z-10 TSUFFIX-transition-all TSUFFIX-duration-200 hover:TSUFFIX-bg-gray-50 TSUFFIX-border TSUFFIX-border-gray-200 ${
+            className={`LBTANN-absolute LBTANN-right-0 LBTANN-top-1/2 LBTANN--translate-y-1/2 LBTANN-bg-white LBTANN-rounded-full LBTANN-p-2 LBTANN-shadow-lg LBTANN-z-10 LBTANN-transition-all LBTANN-duration-200 hover:LBTANN-bg-gray-50 LBTANN-border LBTANN-border-gray-200 ${
               scrollPosition >= maxScroll - 16
                 ? hideIfUnclickable && !wrapScroll
-                  ? " TSUFFIX-hidden "
-                  : " TSUFFIX-opacity-40 TSUFFIX-cursor-not-allowed "
-                : " TSUFFIX-opacity-100 hover:TSUFFIX-scale-105 "
+                  ? " LBTANN-hidden "
+                  : " LBTANN-opacity-40 LBTANN-cursor-not-allowed "
+                : " LBTANN-opacity-100 hover:LBTANN-scale-105 "
             }`}
             disabled={!wrapScroll && scrollPosition >= maxScroll - 16}
             aria-label="Scroll right"
             role="button"
             type="button"
           >
-            <ChevronRight className="TSUFFIX-h-5 TSUFFIX-w-5 TSUFFIX-text-gray-700" />
+            <ChevronRight className="LBTANN-h-5 LBTANN-w-5 LBTANN-text-gray-700" />
           </button>
         </>
       )}

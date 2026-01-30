@@ -18,8 +18,8 @@
   );
 
   (async () => {
-    const code = await window.TSUFFIX_loadCode();
-    window.TSUFFIXSendLog({
+    const code = await window.LBTANN_loadCode();
+    window.LBTANNSendLog({
       level: 'info',
       type: 'block_enabled',
       message: 'FBT block loaded',
@@ -32,13 +32,13 @@
   }) ()
 
 </script>
-<div id="TSUFFIX-block-target"></div>
+<div id="LBTANN-block-target"></div>
 
 {% if should_render == 'true' or should_render == true %}
 <script>
-  window.TSUFFIXBlockInitReact = async function (data) {
-    window.TSUFFIXContext = window.TSUFFIXContext || {};
-    window.TSUFFIXContext['TSUFFIX-block-target'] = {
+  window.LBTANNBlockInitReact = async function (data) {
+    window.LBTANNContext = window.LBTANNContext || {};
+    window.LBTANNContext['LBTANN-block-target'] = {
       context: 'block',
       data: {
         //...
@@ -47,7 +47,7 @@
     {% render 'gzippedScript' %}
     {% render 'unZipAndExecuteScript' %}
   }
-  window.TSUFFIXBlockInitReact();
+  window.LBTANNBlockInitReact();
 </script>
 {% render 'refreshCarts' %}
 {% endif %}

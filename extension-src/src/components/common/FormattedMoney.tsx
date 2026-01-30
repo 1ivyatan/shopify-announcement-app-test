@@ -12,8 +12,8 @@ export default function FormattedMoney({
   useEffect(() => {
     // Get the formatted HTML
     const html =
-      window.TSUFFIXShopify.money_format &&
-      window.TSUFFIXFormatMoney(amount, window.TSUFFIXShopify.moneyFormat);
+      window.LBTANNShopify.money_format &&
+      window.LBTANNFormatMoney(amount, window.LBTANNShopify.moneyFormat);
 
     // Decode HTML entities (convert &lt; to <, etc.)
     const textarea = document.createElement("textarea");
@@ -21,7 +21,7 @@ export default function FormattedMoney({
     const decodedHtml = textarea.value;
 
     setFormattedHtml(decodedHtml);
-  }, [amount, window.TSUFFIXShopify.money_format]);
+  }, [amount, window.LBTANNShopify.money_format]);
 
   return (
     <div

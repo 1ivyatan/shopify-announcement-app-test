@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  prefix: "TSUFFIX-",
+  prefix: "LBTANN-",
   darkMode: ["class"],
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", // Add your src folder and any relevant file extensions

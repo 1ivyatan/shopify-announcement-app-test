@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
-// Custom plugin to modify the CSS after a certain class and prefix all rules with .TSUFFIX-tw-scope
+// Custom plugin to modify the CSS after a certain class and prefix all rules with .LBTANN-tw-scope
 function replaceRemWithEmAndPrefix() {
   return {
     name: "replace-rem-with-em-and-prefix", // Name of the plugin
@@ -18,7 +18,7 @@ function replaceRemWithEmAndPrefix() {
             cssContent = cssContent.replace(/rem/g, "em");
 
             // Use a regex to match the marker class, ignoring extra spaces and newlines
-            const markerRegex = /\.TSUFFIX-every-class-after-this\s*\{\s*content:\s*"";\s*\}/;
+            const markerRegex = /\.LBTANN-every-class-after-this\s*\{\s*content:\s*"";\s*\}/;
             const markerMatch = cssContent.match(markerRegex);
 
             if (markerMatch) {
@@ -31,11 +31,11 @@ function replaceRemWithEmAndPrefix() {
                 .split("\n")
                 .map((line: string) => {
                   const trimmedLine = line.trimStart();
-                  // If the line starts with a `.`, prefix it with `.TSUFFIX-tw-scope `
+                  // If the line starts with a `.`, prefix it with `.LBTANN-tw-scope `
                   if (trimmedLine.startsWith(".")) {
                     return line.replace(
                       /^\s*\./,
-                      (indent: string) => `${indent}TSUFFIX-tw-scope .`
+                      (indent: string) => `${indent}LBTANN-tw-scope .`
                     );
                   }
                   return line; // Return the line unmodified if it doesn't start with `.`

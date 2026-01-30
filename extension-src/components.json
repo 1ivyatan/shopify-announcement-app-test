@@ -8,7 +8,7 @@
     "css": "src/index.css",
     "baseColor": "neutral",
     "cssVariables": false,
-    "prefix": "TSUFFIX-"
+    "prefix": "LBTANN-"
   },
   "aliases": {
     "components": "@/components",

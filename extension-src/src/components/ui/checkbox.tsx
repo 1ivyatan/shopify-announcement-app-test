@@ -37,7 +37,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 
     // Combine class names
     const rootClasses = [
-      "TSUFFIX-peer TSUFFIX-h-4 TSUFFIX-w-4 TSUFFIX-shrink-0 TSUFFIX-min-w-0 TSUFFIX-rounded-sm TSUFFIX-border TSUFFIX-shadow focus-visible:TSUFFIX-outline-none focus-visible:TSUFFIX-ring-1 disabled:TSUFFIX-cursor-not-allowed disabled:TSUFFIX-opacity-50",
+      "LBTANN-peer LBTANN-h-4 LBTANN-w-4 LBTANN-shrink-0 LBTANN-min-w-0 LBTANN-rounded-sm LBTANN-border LBTANN-shadow focus-visible:LBTANN-outline-none focus-visible:LBTANN-ring-1 disabled:LBTANN-cursor-not-allowed disabled:LBTANN-opacity-50",
       className,
     ]
       .filter(Boolean)
@@ -102,16 +102,16 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             left: 0,
             pointerEvents: "auto",
           }}
-          className="TSUFFIX-hidden-checkbox"
+          className="LBTANN-hidden-checkbox"
           aria-hidden="false"
           {...props}
         />
 
         {internalChecked && (
-          <div className="TSUFFIX-flex TSUFFIX-items-center TSUFFIX-justify-center TSUFFIX-text-current">
+          <div className="LBTANN-flex LBTANN-items-center LBTANN-justify-center LBTANN-text-current">
             {presetDetails.type === "volumeDiscount" ? (
               <div
-                className="TSUFFIX-h-2 TSUFFIX-w-2 TSUFFIX-rounded-full TSUFFIX-flex TSUFFIX-items-center TSUFFIX-justify-center"
+                className="LBTANN-h-2 LBTANN-w-2 LBTANN-rounded-full LBTANN-flex LBTANN-items-center LBTANN-justify-center"
                 style={{
                   background: style.color || presetDetails.checkboxCheckColor,
                 }}
@@ -122,7 +122,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
                 size={12}
                 strokeWidth={3}
                 style={checkIconStyle}
-                className="TSUFFIX-stroke-[2.5px]"
+                className="LBTANN-stroke-[2.5px]"
                 aria-hidden="true"
               />
             )}

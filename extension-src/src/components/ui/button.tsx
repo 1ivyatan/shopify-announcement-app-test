@@ -2,13 +2,13 @@ import * as React from "react";
 
 // Define button variants and sizes as regular string classes
 const BUTTON_BASE_CLASSES =
-  "TSUFFIX-inline-flex TSUFFIX-items-center TSUFFIX-justify-center TSUFFIX-gap-2 TSUFFIX-whitespace-nowrap TSUFFIX-transition-colors focus-visible:TSUFFIX-outline-none disabled:TSUFFIX-pointer-events-none disabled:TSUFFIX-opacity-50";
+  "LBTANN-inline-flex LBTANN-items-center LBTANN-justify-center LBTANN-gap-2 LBTANN-whitespace-nowrap LBTANN-transition-colors focus-visible:LBTANN-outline-none disabled:LBTANN-pointer-events-none disabled:LBTANN-opacity-50";
 
 const BUTTON_SIZES = {
-  default: "TSUFFIX-h-9 TSUFFIX-px-4 TSUFFIX-py-2",
-  sm: "TSUFFIX-h-[28px] TSUFFIX-rounded-md TSUFFIX-px-3 TSUFFIX-text-xs",
-  lg: "TSUFFIX-h-10 TSUFFIX-rounded-md TSUFFIX-px-8",
-  icon: "TSUFFIX-h-9 TSUFFIX-w-9",
+  default: "LBTANN-h-9 LBTANN-px-4 LBTANN-py-2",
+  sm: "LBTANN-h-[28px] LBTANN-rounded-md LBTANN-px-3 LBTANN-text-xs",
+  lg: "LBTANN-h-10 LBTANN-rounded-md LBTANN-px-8",
+  icon: "LBTANN-h-9 LBTANN-w-9",
 };
 
 export type ButtonSize = keyof typeof BUTTON_SIZES;

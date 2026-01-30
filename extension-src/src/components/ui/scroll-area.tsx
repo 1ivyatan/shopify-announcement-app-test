@@ -17,14 +17,14 @@ export const ScrollArea = ({ className = "", style, children }: ScrollAreaProps)
   return (
     <div
       ref={containerRef}
-      className={`TSUFFIX-relative TSUFFIX-overflow-auto TSUFFIX-scrollbar-hide ${className}`}
+      className={`LBTANN-relative LBTANN-overflow-auto LBTANN-scrollbar-hide ${className}`}
       style={{
         scrollbarWidth: "none" /* Firefox */,
         msOverflowStyle: "none" /* IE and Edge */,
         ...style,
       }}
     >
-      <div className="TSUFFIX-min-w-full TSUFFIX-min-h-full">{children}</div>
+      <div className="LBTANN-min-w-full LBTANN-min-h-full">{children}</div>
     </div>
   );
 };
@@ -38,21 +38,21 @@ export const ScrollBar = ({ orientation = "vertical", className = "" }: ScrollBa
       className={`
         ${
           isHorizontal
-            ? "TSUFFIX-h-2 TSUFFIX-bottom-0 TSUFFIX-left-0 TSUFFIX-right-4"
-            : "TSUFFIX-w-2 TSUFFIX-top-0 TSUFFIX-right-0 TSUFFIX-bottom-4"
+            ? "LBTANN-h-2 LBTANN-bottom-0 LBTANN-left-0 LBTANN-right-4"
+            : "LBTANN-w-2 LBTANN-top-0 LBTANN-right-0 LBTANN-bottom-4"
         } 
-        TSUFFIX-flex TSUFFIX-relative TSUFFIX-touch-none TSUFFIX-select-none ${className}`}
+        LBTANN-flex LBTANN-relative LBTANN-touch-none LBTANN-select-none ${className}`}
       aria-hidden="true"
     >
       <div
         className={`
-        TSUFFIX-relative 
-        TSUFFIX-flex-1 
-        TSUFFIX-rounded-full 
-        TSUFFIX-bg-gray-200
-        TSUFFIX-opacity-50
-        hover:TSUFFIX-opacity-100
-        ${isHorizontal ? "TSUFFIX-h-full" : "TSUFFIX-w-full"}
+        LBTANN-relative 
+        LBTANN-flex-1 
+        LBTANN-rounded-full 
+        LBTANN-bg-gray-200
+        LBTANN-opacity-50
+        hover:LBTANN-opacity-100
+        ${isHorizontal ? "LBTANN-h-full" : "LBTANN-w-full"}
       `}
       ></div>
     </div>

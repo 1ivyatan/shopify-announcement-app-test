@@ -1,7 +1,7 @@
 export function initPreviewUtils(moneyFormat: string) {
-  window.TSUFFIXShopify = {};
-  window.TSUFFIXShopify.money_format = moneyFormat || "";
-  window.TSUFFIXFormatMoney = function (cents: any, format: any) {
+  window.LBTANNShopify = {};
+  window.LBTANNShopify.money_format = moneyFormat || "";
+  window.LBTANNFormatMoney = function (cents: any, format: any) {
     if (!moneyFormat) {
       return "";
     }
@@ -10,7 +10,7 @@ export function initPreviewUtils(moneyFormat: string) {
     }
     let value = "";
     const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
-    const formatString = format || window.TSUFFIXShopify.money_format;
+    const formatString = format || window.LBTANNShopify.money_format;
 
     function defaultOption(opt: any, def: any) {
       return typeof opt == "undefined" ? def : opt;
