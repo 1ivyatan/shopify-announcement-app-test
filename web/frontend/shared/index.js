@@ -126,11 +126,7 @@ const App = ({ contextData }) => {
   if (!shouldShow) {
     return null;
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "TSUFFIX-tw-scope", children: [
-    "Temp hello world",
-    /* @__PURE__ */ jsxRuntimeExports.jsx("code", { children: temp }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("code", { children: JSON.stringify(contextData, null, 2) })
-  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "TSUFFIX-tw-scope", children: "Temp hello world AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" });
 };
 export {
   App as ExtensionPreview

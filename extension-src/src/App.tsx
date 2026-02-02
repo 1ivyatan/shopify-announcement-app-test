@@ -24,9 +24,11 @@ export const App = ({ contextData }: { contextData: any }) => {
 
   return (
     <div className="TSUFFIX-tw-scope">
-      Temp hello world
-      <code>{temp}</code>
-      <code>{JSON.stringify(contextData, null, 2)}</code>
+      Temp hello world test AGAIN
+      
     </div>
   );
+
+  /*<code>{temp}</code>
+      <code>{JSON.stringify(contextData, null, 2)}</code>*/
 };

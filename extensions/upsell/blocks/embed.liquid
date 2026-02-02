@@ -6,35 +6,13 @@
 {% render 'should-render', meta: meta, shop: s %}
 {% endcapture %}
 {% assign should_render = should_render | strip_html | strip %}
-
-{% render 'logUtils' %}
 {% render 'prepareScript' %}
-
-<script>
-  console.log(
-    '%cLibautech TEMP Embed extension: v1.0.0 - {{ should_render }}',
-    'font-size: 16px; color: #806FBF; background: #fff; border-radius:4px; padding: 0 2px; font-weight: bold;'
-  );
-
-  (async () => {
-    const code = await window.TSUFFIX_loadCode();
-    window.TSUFFIXSendLog({
-      level: 'info',
-      type: 'embed_enabled',
-      message: 'Embed block loaded',
-      properties: {
-        should_render: {{ should_render | json }},
-  code_version: code.version,
-    code_source: code.source
-      }
-    });
-  }) ()
-</script>
 
 
 <div id="TSUFFIX-embed-target"></div>
 
 {% if should_render == 'true' or should_render == true %}
+
 <script>
   window.TSUFFIXEmbedInitReact = async function (data) {
     window.TSUFFIXContext = window.TSUFFIXContext || {};
@@ -44,12 +22,38 @@
         //...
       }
     };
-    {% render 'gzippedScript' %}
-    {% render 'unZipAndExecuteScript' %}
+    
+    const code = await window.TSUFFIX_loadCode();
+
+    if (!code || !code.code) {
+      console.error("Critical error: No code to execute");
+  //send log
+      return;
+    }
+
+
+    const binaryString = atob(code.code);
+    const bytes = new Uint8Array(binaryString.length);
+
+    for (let i = 0; i < binaryString.length; i++) { bytes[i]=binaryString.charCodeAt(i); } const ds=new
+      DecompressionStream("gzip"); const stream=new Response(bytes).body.pipeThrough(ds); const reader=stream.getReader();
+      let result="" ; function processChunks() {
+        return reader.read().then(({ done, value })=> {
+          if (done) {
+            const script = result;
+            eval(script);
+            return;
+          }
+
+          result += new TextDecoder().decode(value);
+          return processChunks();
+      });
+    }
+
+    processChunks().catch((err) => console.error("Decompression error:", err));
   }
   window.TSUFFIXEmbedInitReact();
 </script>
-{% render 'refreshCarts' %}
 {% endif %}
 
 {% schema %}

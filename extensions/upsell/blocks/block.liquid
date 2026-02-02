@@ -7,31 +7,8 @@
 {% assign should_render = should_render | strip_html | strip %}
 
 
-{% render 'logUtils' %}
 {% render 'prepareScript' %}
 
-
-<script>
-  console.log(
-    '%cLibautech TEMP FBT extension: v1.0.0 - {{ should_render }}',
-    'font-size: 16px; color: #806FBF; background: #fff; border-radius:4px; padding: 0 2px; font-weight: bold;'
-  );
-
-  (async () => {
-    const code = await window.TSUFFIX_loadCode();
-    window.TSUFFIXSendLog({
-      level: 'info',
-      type: 'block_enabled',
-      message: 'FBT block loaded',
-      properties: {
-        should_render: {{ should_render | json }},
-  code_version: code.version,
-    code_source: code.source
-      }
-    });
-  }) ()
-
-</script>
 <div id="TSUFFIX-block-target"></div>
 
 {% if should_render == 'true' or should_render == true %}
@@ -49,7 +26,6 @@
   }
   window.TSUFFIXBlockInitReact();
 </script>
-{% render 'refreshCarts' %}
 {% endif %}
 
 

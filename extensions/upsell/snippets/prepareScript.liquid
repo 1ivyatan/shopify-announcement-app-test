@@ -11,7 +11,7 @@
 
     // Async function to load widget - returns instantly if metafield exists, fetches if not
     window.TSUFFIX_loadCode = async function () {
-        if (window.TSUFFIX_CODE) {
+       /* if (window.TSUFFIX_CODE) {
             console.debug("TSUFFIX: Using Libau widget from metafield", {
                 version: window.TSUFFIX_CODE_VERSION
             });
@@ -21,7 +21,7 @@
                 version: window.TSUFFIX_CODE_VERSION,
                 source: 'metafield'
             };
-        }
+        }*/
 
         console.debug("TSUFFIX: Libau widget not found in metafield, fetching from proxy...");
 
@@ -33,6 +33,8 @@
             const code = await response.json();
 
             window.TSUFFIX_CODE = code.code;
+
+            console.log(response);
 
             return {
                 code: code.code,
