@@ -1,12 +1,12 @@
 // Modules
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 // Shopify
 import { useAppBridge } from "@shopify/app-bridge-react";
 // Pages
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Page } from "@shopify/polaris";
+import { Card, Page, Text } from "@shopify/polaris";
 import { FooterNew } from "libautech-frontend";
 import { toggleCrisp } from "../utils/miscUtils";
 import { footerIcon } from "../assets";
@@ -21,9 +21,18 @@ export default function Home(): React.ReactElement {
   // State
   const { fetching: shopInfoFetching } = useShopInfoStore();
 
+  const [ announcement, setAnnouncement ] = useState({});
+
+  const fetchAnnouncement = useCallback(async () => {
+    const response = await fetch("/api/shop/announcement");
+    const json = await response.json();
+    setAnnouncement(json.data);
+  }, []);
+
   // Effects
   useEffect(() => {
     shopify.loading(shopInfoFetching);
+    fetchAnnouncement();
   }, [shopInfoFetching, shopify]);
 
   const isLoading: boolean = shopInfoFetching;
@@ -32,14 +41,12 @@ export default function Home(): React.ReactElement {
   ) : (
     <>
       <Page fullWidth>
-        Yo gang
-        <ExtensionPreview contextData={{}} />
-        <FooterNew
-          toggleSupportActive={toggleCrisp}
-          appIcon={footerIcon}
-          appName={"Smart Upsell"}
-          app={"add-upsell-cross-sell"}
-        />
+
+        <Card>
+          
+          <Text variant="bodyMd" as="p">Preview:</Text>
+          <ExtensionPreview contextData={{context: "preview", data: {...announcement, enabled: true}}} />
+        </Card>
       </Page>
     </>
   );

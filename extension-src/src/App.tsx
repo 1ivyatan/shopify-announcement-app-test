@@ -23,12 +23,26 @@ export const App = ({ contextData }: { contextData: any }) => {
   }
 
   return (
+    contextData.data.enabled || contextData.context == "preview" ?
     <div className="TSUFFIX-tw-scope">
-      Temp hello world test AGAIN
-      
-    </div>
-  );
 
-  /*<code>{temp}</code>
-      <code>{JSON.stringify(contextData, null, 2)}</code>*/
-};
+      <div style={{
+        width: "100%", padding: "0.5em 1em", lineHeight: "1em",display: "flex",alignItems: "center", justifyContent: "center",
+        fontSize: `${contextData.data.fontSize || 12}pt`, 
+        backgroundColor: `${contextData.data.bgColor || "#000"}`, 
+        color: `${contextData.data.fgColor || "#FFF"}`
+        }}>
+        { contextData.data.text }
+      </div>
+     
+    </div>
+    : <div></div>
+  );
+};  //contextData.enabled
+
+/* <div style={{
+        width: "100%", padding: "0.5em 1em", lineHeight: "1em",display: "flex",alignItems: "center", justifyContent: "center",
+        fontSize: `${contextData.fontSize}pt`, backgroundColor: `${contextData.bgColor}`, color: `${contextData.fgColor}`
+        }}>
+        { contextData.text }
+      </div>*/

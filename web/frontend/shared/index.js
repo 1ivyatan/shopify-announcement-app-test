@@ -126,7 +126,17 @@ const App = ({ contextData }) => {
   if (!shouldShow) {
     return null;
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "TSUFFIX-tw-scope", children: "Temp hello world AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" });
+  return contextData.data.enabled || contextData.context == "preview" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "TSUFFIX-tw-scope", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+    width: "100%",
+    padding: "0.5em 1em",
+    lineHeight: "1em",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: `${contextData.data.fontSize || 12}pt`,
+    backgroundColor: `${contextData.data.bgColor || "#000"}`,
+    color: `${contextData.data.fgColor || "#FFF"}`
+  }, children: contextData.data.text }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", {});
 };
 export {
   App as ExtensionPreview

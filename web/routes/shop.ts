@@ -5,14 +5,67 @@ import {
   mantleCancelPlanEndpoint,
   getPlansFromManager,
   getThemeId,
+  setMetafield,
 } from "libautech-backend";
 import { MantleClient } from "libautech-backend/src/singletons.js";
 import { determineFinalPlan } from "libautech-backend";
 import { checkAndPopulateShopSettings } from "../utils/graphUtils.js";
 // Schemas
 import SettingsSchema from "../schemas/SettingsSchema.js";
+import AnnouncementSchema from "../schemas/AnnouncementSchema.js";
+import { error } from "console";
 
 const router: Router = express.Router();
+
+
+router.get("/announcement", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+
+  const ann = await AnnouncementSchema.findOne({"shop": shop}).exec();
+
+  return res.status(200).send({
+    data: {
+      enabled: ann?.enabled,
+      text: ann?.text,
+      fgColor: ann?.fgColor,
+      bgColor: ann?.bgColor,
+      fontSize: ann?.fontSize
+    },
+    success: true
+  });
+});
+
+router.post("/announcement", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+
+  const { enabled, text, fgColor, bgColor, fontSize } = _req.body ?? {};
+
+  if (enabled == null || text == null) {
+    return res.status(401).send({
+      error: "all body params not supplied"
+    });
+  }
+
+  try {
+    await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
+    await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
+      { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
+    , { new: true, upsert: true });
+    return res.status(200).send({
+      success: true
+    }); 
+  } catch (error) {
+    return res.status(500).send({error: "Server error"});
+  }
+});
 
 router.get("/", async (_req: Request, res: Response) => {
   console.time("Shop");
