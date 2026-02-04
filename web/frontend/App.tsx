@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import AppInitializer from "./AppInitializer";
-import { Home, Plans } from "./pages";
+import { Edit, Create, Home, Plans } from "./pages";
 import "./App.css";
 
 import * as Sentry from "@sentry/react";
@@ -60,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "plans",
         element: <Plans />,
+      },
+      {
+        path: "create",
+        element: <Create />,
+      },
+      {
+        path: "edit",
+        element: <Edit />,
       },
       {
         path: "exitiframe",

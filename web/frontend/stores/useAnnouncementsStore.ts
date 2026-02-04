@@ -11,10 +11,23 @@ export interface IAnnouncementPreview
     updatedAt: Date
 }
 
+export interface Announcement
+{
+    _id: string | null,
+    label: string,
+    enabled: boolean,
+    text: string,
+    fgColor: string,
+    bgColor: string,
+    fontSize: number,
+    createdAt: Date | null,
+    updatedAt: Date | null
+}
+
 const useAnnouncementsStore = create((set, get) => ({
     announcementsData: null,
-    fetchAnnouncements: async (): Promise<void> => {
-        const response = await fetch("/api/shop/announcement");
+    fetchAnnouncements: async (page: number): Promise<void> => {
+        const response = await fetch(`/api/shop/announcement?page=${page}`);
         const json: IAnnouncementPreview[] = await response.json();
         set({ announcementsData: json});
     }

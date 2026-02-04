@@ -1,5 +1,6 @@
 // Modules
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // Shopify
 import { useAppBridge } from "@shopify/app-bridge-react";
 // Pages
@@ -18,11 +19,13 @@ export default function Home(): React.ReactElement {
   // State
   const { fetching: shopInfoFetching } = useShopInfoStore();
   const { fetchAnnouncements, announcementsData } = useAnnouncementsStore();
+  const [ pageNum, setPageNum ] = useState<number>(0);
+  const navigate = useNavigate();
 
   // Effects
   useEffect(() => {
     shopify.loading(shopInfoFetching);
-    fetchAnnouncements();
+    fetchAnnouncements(pageNum);
   }, [shopInfoFetching, shopify]);
 
 
@@ -34,6 +37,7 @@ export default function Home(): React.ReactElement {
         {title: 'Status'},
         {title: 'Text'},
         {title: 'Views'},
+        {title: 'Last updated'},
         {title: 'Actions'},
       ]}
       selectable={false}
@@ -65,9 +69,12 @@ export default function Home(): React.ReactElement {
                     {item.text}
                   </IndexTable.Cell>
 
-
                   <IndexTable.Cell>
                     0
+                  </IndexTable.Cell>
+
+                  <IndexTable.Cell>
+                    {item.updatedAt}
                   </IndexTable.Cell>
 
                   <IndexTable.Cell>
@@ -76,7 +83,7 @@ export default function Home(): React.ReactElement {
                         icon={EditIcon}
                         accessibilityLabel="Add banner"
                         onClick={() => {
-
+                          navigate("/edit/item._id");
                         }}
                       />
                       <Button
@@ -85,7 +92,7 @@ export default function Home(): React.ReactElement {
                         tone="critical"
                         accessibilityLabel="Delete banner"
                         onClick={() => {
-                          
+
                         }}
                       />
                     </ButtonGroup>
@@ -104,6 +111,12 @@ export default function Home(): React.ReactElement {
     <>
       <Page fullWidth>
         <Card>
+          <Button 
+            variant="primary"
+            onClick={() => {
+              navigate("/create");
+            }}
+          >Create</Button>
           { announcementsListMarkup }
         </Card>
       </Page>
