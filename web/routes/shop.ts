@@ -27,7 +27,7 @@ router.get("/announcement", async (_req: Request, res: Response) => {
 
   const anns = await AnnouncementSchema.aggregate([ 
     { "$match": {"shop": shop} }, 
-    { "$project": { _id: -1, shop: 1, enabled: 1, text: { "$substrCP": [ "$text", 0, 50 ]  }, createdAt: 1, updatedAt: 1 } }
+    { "$project": { _id: -1, shop: 1, label: 1, enabled: 1, text: { "$substrCP": [ "$text", 0, 50 ]  }, createdAt: 1, updatedAt: 1 } }
   ]).exec();
 
   return res.status(200).send({

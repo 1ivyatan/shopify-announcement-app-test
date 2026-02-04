@@ -9,6 +9,10 @@ export const AnnouncementSchema = new Schema({
     type: String,
     required: [true, "Shop name is required"],
   },
+  label: {
+    type: String,
+    required: [true, "Label is required"],
+  },
   enabled: {
     type: Boolean,
     required: [true, "Enabled is required"],

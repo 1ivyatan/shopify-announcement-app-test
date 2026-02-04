@@ -1,9 +1,10 @@
 import { create } from "zustand";
 
-interface AnnouncementPreview
+export interface IAnnouncementPreview
 {
     _id: string,
     shop: string,
+    label: string,
     enabled: boolean,
     text: string,
     createdAt: Date,
@@ -11,11 +12,11 @@ interface AnnouncementPreview
 }
 
 const useAnnouncementsStore = create((set, get) => ({
-    fetchAnnouncements: async (): Promise<AnnouncementPreview[]> => {
+    announcementsData: null,
+    fetchAnnouncements: async (): Promise<void> => {
         const response = await fetch("/api/shop/announcement");
-        const json = await response.json();
-        console.log(json)
-        return json;
+        const json: IAnnouncementPreview[] = await response.json();
+        set({ announcementsData: json});
     }
 }));
 
