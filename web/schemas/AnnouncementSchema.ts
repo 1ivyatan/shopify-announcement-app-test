@@ -25,7 +25,7 @@ export const AnnouncementSchema = new Schema({
   fontSize: {
     type: Number
   }
-});
+}, { timestamps: true });
 
 export type IAnnouncement = InferSchemaType<typeof AnnouncementSchema>;
 

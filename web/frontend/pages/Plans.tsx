@@ -18,7 +18,6 @@ export default function Plans(): React.ReactElement {
     sendEvent("plans_page_visit", null);
   }, []);
 
-  console.log("hello");
   return (
     <Page>
       {!fetching || (plan && plans) ? (
