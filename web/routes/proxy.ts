@@ -7,6 +7,7 @@ import { registerEmbedLog } from "../utils/conversionUtils.js";
 // Constants
 import { widgetGzipped, widgetVersion } from "../constants/widgetGzipped.js";
 import { setCodeMetafield } from "../utils/widgetScriptUtils.js";
+import AnnouncementSchema from "../schemas/AnnouncementSchema.js";
 
 const router: Router = express.Router();
 
@@ -37,6 +38,35 @@ In the case of a critical failure (i.e., when there is no metafield), we assume 
 
 This uses a debounce of 1 minute per shop.
 */
+
+router.put("/sendstats", async (req: Request, res: Response) => {
+  const { ids } = req.body ?? {};
+
+  if (ids && ids.length > 0) {
+    try {
+
+      await AnnouncementSchema.updateMany({_id: { $in: ids }},
+        { $inc: { "views": 1 } }
+      ).exec();
+
+      return res.status(200).json({
+        meta: {
+          success: true
+        }
+      });
+    } catch (error: any) {
+      return res.status(500).json({
+        error: "Server error"
+      });
+    }
+  } else {
+    return res.status(400).json({
+      error: "No params"
+    });
+  }
+  
+});
+
 router.get("/widget", async (req: Request, res: Response) => {
   try {
     res.send({ version: widgetVersion, code: widgetGzipped });
