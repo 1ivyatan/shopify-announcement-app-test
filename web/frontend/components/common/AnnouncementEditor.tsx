@@ -2,6 +2,7 @@ import { Button, Checkbox, ColorPicker, FormLayout, hexToRgb, hsbToHex, InlineGr
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { Form } from "react-router-dom";
 import useAnnouncementsStore, { Announcement } from "../../stores/useAnnouncementsStore";
+import { Loader } from "lucide-react";
 
 export const AnnouncementEditor = (props: { method: string, afterSubmission: Function, data: Announcement, setData: any}): React.ReactElement => {
     const [ enabledSubmit, setEnabledSubmit ] = useState<boolean>(false);
@@ -10,6 +11,8 @@ export const AnnouncementEditor = (props: { method: string, afterSubmission: Fun
     const [ bgColor, setBgColor ] = useState({hue: 0,brightness: 100,saturation: 0,});
 
     useEffect(() => {
+        if (props.data == null) return;
+
         if (
             props.data.label.trim().length == 0 ||
             props.data.text.trim().length == 0
@@ -47,6 +50,7 @@ export const AnnouncementEditor = (props: { method: string, afterSubmission: Fun
     }, [props.data]);
 
     return (
+        props.data ?
         <Form onSubmit={onSubmit}>
             <FormLayout>
                 <FormLayout.Group>
@@ -113,6 +117,6 @@ export const AnnouncementEditor = (props: { method: string, afterSubmission: Fun
                     </FormLayout>
                 </FormLayout.Group>
             </FormLayout>
-        </Form>
+        </Form> : <Loader />
     );
 };

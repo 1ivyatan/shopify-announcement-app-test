@@ -22,7 +22,7 @@ export default function Edit(): React.ReactElement {
   const shopify = useAppBridge();
   // State
   const { fetching: shopInfoFetching } = useShopInfoStore();
-  const [ announcement, setAnnouncement ] = useState<Announcement>(nullAnnouncement);
+  const [ announcement, setAnnouncement ] = useState<Announcement | undefined>(undefined);
 
   const [ activeMessage, setActiveMessage ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<AlertMessageData>({
@@ -82,7 +82,7 @@ export default function Edit(): React.ReactElement {
   );
 
   const isLoading: boolean = shopInfoFetching;
-  const pageMarkup: React.ReactElement = isLoading ? (
+  const pageMarkup: React.ReactElement = isLoading || announcement == undefined ? (
     <Loader />
   ) : id ? (
     <>
