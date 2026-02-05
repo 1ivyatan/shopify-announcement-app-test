@@ -12,6 +12,7 @@ import {EditIcon, DeleteIcon} from '@shopify/polaris-icons';
 import useAnnouncementsStore, { Announcement, nullAnnouncement } from "../stores/useAnnouncementsStore";
 import { AnnouncementEditor } from "../components/common/AnnouncementEditor";
 import { ExtensionPreview } from "../shared/index";
+import { AlertMessage, AlertMessageData } from "../components/common/AlertMessage";
 
 // Start of component
 export default function Create(): React.ReactElement {
@@ -22,21 +23,26 @@ export default function Create(): React.ReactElement {
   //const { fetchAnnouncements, announcementsData } = useAnnouncementsStore();
   const navigate = useNavigate();
 
+  const { postAnnouncement } = useAnnouncementsStore();
   const [ announcement, setAnnouncement ] = useState<Announcement>(nullAnnouncement);
+  const [ valid, setValid ] = useState<boolean>(false);
 
   // Effects
   useEffect(() => {
     shopify.loading(shopInfoFetching);
   }, [shopInfoFetching, shopify]);
 
-  const afterSubmission = async (response: Response) => {
-    if (response.ok) {
-      const json = await response.json();
-      navigate(`/edit/${json.data._id}`);
-    } else {
-
-    }
-  }
+  const [ activeMessage, setActiveMessage ] = useState<boolean>(false);
+  const [ message, setMessage ] = useState<AlertMessageData>({
+    text: "",
+    setActive: setActiveMessage,
+    tone: "info"
+  });
+  const infoBanner: React.ReactElement = (
+      activeMessage
+          ? <AlertMessage data={message} />
+          : <></>
+  );
 
   const isLoading: boolean = shopInfoFetching;
   const pageMarkup: React.ReactElement = isLoading ? (
@@ -45,7 +51,41 @@ export default function Create(): React.ReactElement {
     <>
       <Page 
         fullWidth
+        compactTitle
+        title="Create announcement banner"
+        backAction={{onAction: () => {
+            navigate("/");
+        }}}
+        primaryAction={
+            <Button
+                variant="primary"
+                disabled={!valid}
+                onClick={ async () => {
+                    setValid(false);
+                    setActiveMessage(false);
+                    const response = await postAnnouncement(announcement);
+
+                    if (response.ok) {
+                      const json = await response.json();
+                      navigate(`/edit/${json.data._id}`);
+                    } else {
+                        const json = await response.json();
+                        setMessage({
+                            ...message,
+                            text: `Error: ${json.error}`,
+                            tone: "critical"
+                        })
+                        setActiveMessage(true);
+                    }
+                    setValid(true);
+                }}
+            >
+                Save
+            </Button>
+        }
       >
+        { infoBanner }
+
         <Text variant="headingLg" as="h3">
           Preview
         </Text>
@@ -58,7 +98,7 @@ export default function Create(): React.ReactElement {
           Properties
         </Text>
         <Card>
-          <AnnouncementEditor method={"POST"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
+            <AnnouncementEditor setValid={setValid} setData={setAnnouncement} data={announcement}/>
         </Card>
       </Page>
     </>

@@ -1,5 +1,5 @@
 // Modules
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // Shopify
 import { useAppBridge } from "@shopify/app-bridge-react";
@@ -23,6 +23,7 @@ export default function Edit(): React.ReactElement {
   // State
   const { fetching: shopInfoFetching } = useShopInfoStore();
   const [ announcement, setAnnouncement ] = useState<Announcement | undefined>(undefined);
+  const [ valid, setValid ] = useState<boolean>(false);
 
   const [ activeMessage, setActiveMessage ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<AlertMessageData>({
@@ -31,7 +32,7 @@ export default function Edit(): React.ReactElement {
     tone: "info"
   });
 
-  const { fetchAnnouncement } = useAnnouncementsStore();
+  const { fetchAnnouncement, putAnnouncement } = useAnnouncementsStore();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
@@ -52,25 +53,6 @@ export default function Edit(): React.ReactElement {
     }
   }, [shopInfoFetching, shopify]);
 
-  const afterSubmission = async (response: Response) => {
-    if (response.ok) {
-        setMessage({
-            ...message,
-            text: "Success!",
-            tone: "success"
-        })
-        setActiveMessage(true);
-    } else {
-        const json = await response.json();
-        setMessage({
-            ...message,
-            text: `Error: ${json.error}`,
-            tone: "critical"
-        })
-        setActiveMessage(true);
-    }
-  };
-
   const infoBanner: React.ReactElement = (
     activeMessage
         ? <AlertMessage data={message} />
@@ -86,7 +68,48 @@ export default function Edit(): React.ReactElement {
     <Loader />
   ) : id ? (
     <>
-      <Page fullWidth>
+      <Page 
+        fullWidth
+        compactTitle
+        title="Edit announcement banner"
+        backAction={{onAction: () => {
+            navigate("/");
+        }}}
+        primaryAction={
+            <Button
+                variant="primary"
+                disabled={!valid}
+                onClick={ async () => {
+                    setValid(false);
+                    setActiveMessage(false);
+                    const response = await putAnnouncement(announcement);
+
+                    if (response.ok) {
+                        setMessage({
+                            ...message,
+                            text: "Success!",
+                            tone: "success"
+                        })
+                        setActiveMessage(true);
+                    } else {
+                        const json = await response.json();
+                        setMessage({
+                            ...message,
+                            text: `Error: ${json.error}`,
+                            tone: "critical"
+                        })
+                        setActiveMessage(true);
+                    }
+
+                    setValid(true);
+                }}
+            >
+                Save
+            </Button>
+        }
+      >
+        { infoBanner }
+
         <Text variant="headingLg" as="h3">
             Preview
         </Text>
@@ -102,8 +125,7 @@ export default function Edit(): React.ReactElement {
         </Text>
 
         <Card>
-            { infoBanner }
-            <AnnouncementEditor method={"PUT"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
+            <AnnouncementEditor setValid={setValid} setData={setAnnouncement} data={announcement}/>
         </Card>
       </Page>
     </>
