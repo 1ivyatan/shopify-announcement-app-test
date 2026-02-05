@@ -31,7 +31,9 @@ export const nullAnnouncement: Announcement = {
 
 const useAnnouncementsStore = create((set, get) => ({
     announcementsData: null,
+    loadingStatus: "done",
     fetchAnnouncements: async (page: number): Promise<void> => {
+        set({announcementsData: null});
         const response = await fetch(`/api/shop/announcement?page=${page}`);
         if (response.ok) {
             const json: IAnnouncementPreview[] = await response.json();

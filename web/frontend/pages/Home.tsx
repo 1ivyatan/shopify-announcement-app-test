@@ -31,10 +31,22 @@ export default function Home(): React.ReactElement {
     fetchAnnouncements(pageNum);
   }, [shopInfoFetching, shopify]);
 
+  useEffect(() => {
+    fetchAnnouncements(pageNum);
+  }, [pageNum]);
+
   // deletion
   const [activeDeletion, setActiveDeletion] = useState(true);
 
   const announcementsListMarkup = (
+    announcementsData ? 
+    <>
+    <Button 
+      variant="primary"
+      onClick={() => {
+        navigate("/create");
+      }}
+    >Create</Button>
     <IndexTable
       itemCount={announcementsData ? announcementsData.data.length : 0}
       headings={[
@@ -48,13 +60,14 @@ export default function Home(): React.ReactElement {
       selectable={false}
 
       pagination={{
-        hasNext: true,
-        onNext: () => {},
-        onPrevious: () => {}
+        hasNext: announcementsData.meta.hasNext ?? false,
+        hasPrevious: announcementsData.meta.hasPrev ?? false,
+        onNext: () => { setPageNum(pageNum + 1) },
+        onPrevious: () => { setPageNum(pageNum - 1) }
       }}
     >
       {
-          announcementsData && announcementsData.data.map(
+          announcementsData && announcementsData.data.length > 0 && announcementsData.data.map(
             (item: any, index: number) => {
               return (
                 <IndexTable.Row id={item._id} key={item._id} position={index}>
@@ -107,7 +120,7 @@ export default function Home(): React.ReactElement {
             }
           )
       }
-    </IndexTable>);
+    </IndexTable></> : <Loader />);
 
   const deleteModal = (
   selectedBanner.length > 0 ? 
@@ -155,12 +168,6 @@ export default function Home(): React.ReactElement {
     <>
       <Page fullWidth>
         <Card>
-          <Button 
-            variant="primary"
-            onClick={() => {
-              navigate("/create");
-            }}
-          >Create</Button>
           { announcementsListMarkup }
         </Card>
       </Page>

@@ -24,6 +24,9 @@ router.get("/announcement", async (_req: Request, res: Response) => {
     session,
   });
 
+  const { page } = _req.query ?? 0;
+  const count = 10;
+
   const anns = await AnnouncementSchema.aggregate([ 
     { "$match": {"shop": shop} }, 
     { "$project": { 
@@ -33,13 +36,18 @@ router.get("/announcement", async (_req: Request, res: Response) => {
       enabled: 1, 
       text: { "$substrCP": [ "$text", 0, 50 ]  }, 
       createdAt: 1, 
-      updatedAt: 1 } }
+      updatedAt: 1 } },
+    { $skip: (parseInt(`${page}`)) * count },
+    { "$limit": count }
   ]).exec();
 
   return res.status(200).send({
     data: anns,
     meta: {
-      success: true
+      page: parseInt(`${page}`),
+      success: true,
+      hasNext: anns.length == count,
+      hasPrev: parseInt(`${page}`) > 0 || anns.length == 0
     }
   });
 });
