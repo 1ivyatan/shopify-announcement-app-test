@@ -1,10 +1,11 @@
-import { Button, Checkbox, ColorPicker, FormLayout, hsbToHex, InlineGrid, Text, TextField } from "@shopify/polaris";
+import { Button, Checkbox, ColorPicker, FormLayout, hexToRgb, hsbToHex, InlineGrid, rgbToHsb, Text, TextField } from "@shopify/polaris";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { Form } from "react-router-dom";
-import { Announcement } from "../../stores/useAnnouncementsStore";
+import useAnnouncementsStore, { Announcement } from "../../stores/useAnnouncementsStore";
 
 export const AnnouncementEditor = (props: { method: string, afterSubmission: Function, data: Announcement, setData: any}): React.ReactElement => {
     const [ enabledSubmit, setEnabledSubmit ] = useState<boolean>(false);
+    const { putAnnouncement, postAnnouncement } = useAnnouncementsStore();
     const [ fgColor, setFgColor ] = useState({hue: 0,brightness: 0,saturation: 0,});
     const [ bgColor, setBgColor ] = useState({hue: 0,brightness: 100,saturation: 0,});
 
@@ -17,22 +18,31 @@ export const AnnouncementEditor = (props: { method: string, afterSubmission: Fun
         } else {
             setEnabledSubmit(true);
         }
+
+        setFgColor(rgbToHsb(hexToRgb(props.data.fgColor)));
+        setBgColor(rgbToHsb(hexToRgb(props.data.bgColor)));
+
     }, [props.data]);
 
     const onSubmit = useCallback(async () => {
+        let response: Response | undefined = undefined;
         if (!enabledSubmit) {
             props.afterSubmission(false);
         }
 
         setEnabledSubmit(false);
 
-        const response = await fetch(`/api/shop/announcement`, {
-            method: props.method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(props.data)
-        });
+        switch (props.method) {
+            case "PUT":
+                response = await putAnnouncement(props.data);
+                props.afterSubmission(response);
+                break;
+            case "POST":
+                response = await postAnnouncement(props.data);
+                props.afterSubmission(response);
+                break;
+        }
 
-        props.afterSubmission(response);
         setEnabledSubmit(true);
     }, [props.data]);
 

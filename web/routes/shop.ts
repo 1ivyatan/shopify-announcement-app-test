@@ -159,6 +159,39 @@ router.put("/announcement", async (_req: Request, res: Response) => {
   }
 });
 
+
+router.delete("/announcement/:id", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+
+  const id = _req.params.id ?? null;
+
+  if (id) {
+    try {
+      /* prevent someone from accessing banners foreign to them */
+      const ann = await AnnouncementSchema.findOne({"shop": shop, "_id": id}).exec();
+      await AnnouncementSchema.deleteOne({"shop": shop, "_id": id}).exec();
+
+      return res.status(200).send({
+        data: ann,
+        meta: {
+          success: true
+        }
+      });
+    } catch (error: any) {
+      console.log(error)
+      return res.status(500).send({error: "Server error"});
+    }
+  } else {
+    return res.status(401).send({
+      error: "Id not supplied"
+    });
+  }
+});
+
 router.get("/", async (_req: Request, res: Response) => {
   console.time("Shop");
   const session = res.locals.shopify.session;

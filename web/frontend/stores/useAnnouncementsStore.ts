@@ -38,14 +38,38 @@ const useAnnouncementsStore = create((set, get) => ({
             set({ announcementsData: json});
         }
     },
+
     fetchAnnouncement: async (id: string): Promise<Announcement | undefined> => {
         const response = await fetch(`/api/shop/announcement/${id}`);
         if (response.ok) {
             const json: Announcement = await response.json();
-            return json;
+            return {...json};
         } else {
             return undefined;
         }
+    },
+
+    putAnnouncement: async (body: Announcement): Promise<Response> => {
+        return await fetch(`/api/shop/announcement`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+    },
+
+    postAnnouncement: async (body: Announcement): Promise<Response> => {
+        return await fetch(`/api/shop/announcement`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+    },
+
+    deleteAnnouncement: async (id: string): Promise<Response> => {
+        return await fetch(`/api/shop/announcement/${id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" }
+        });
     }
 }));
 

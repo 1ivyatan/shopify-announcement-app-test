@@ -58,7 +58,7 @@ export default function Create(): React.ReactElement {
           Properties
         </Text>
         <Card>
-          <AnnouncementEditor method={"post"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
+          <AnnouncementEditor method={"POST"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
         </Card>
       </Page>
     </>

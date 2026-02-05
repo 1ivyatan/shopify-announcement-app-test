@@ -103,7 +103,7 @@ export default function Edit(): React.ReactElement {
 
         <Card>
             { infoBanner }
-            <AnnouncementEditor method={"put"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
+            <AnnouncementEditor method={"PUT"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
         </Card>
       </Page>
     </>

@@ -7,7 +7,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Card, Page, IndexTable, Button, Badge, ButtonGroup } from "@shopify/polaris";
+import { Card, Page, IndexTable, Button, Badge, ButtonGroup, Frame, Modal } from "@shopify/polaris";
 import {EditIcon, DeleteIcon} from '@shopify/polaris-icons';
 import useAnnouncementsStore from "../stores/useAnnouncementsStore";
 
@@ -18,9 +18,12 @@ export default function Home(): React.ReactElement {
   const shopify = useAppBridge();
   // State
   const { fetching: shopInfoFetching } = useShopInfoStore();
-  const { fetchAnnouncements, announcementsData } = useAnnouncementsStore();
+  const { fetchAnnouncements, announcementsData, deleteAnnouncement } = useAnnouncementsStore();
+
   const [ pageNum, setPageNum ] = useState<number>(0);
   const navigate = useNavigate();
+
+  const [ selectedBanner, setSelectedBanner ] = useState<string>("");
 
   // Effects
   useEffect(() => {
@@ -28,6 +31,8 @@ export default function Home(): React.ReactElement {
     fetchAnnouncements(pageNum);
   }, [shopInfoFetching, shopify]);
 
+  // deletion
+  const [activeDeletion, setActiveDeletion] = useState(true);
 
   const announcementsListMarkup = (
     <IndexTable
@@ -92,7 +97,7 @@ export default function Home(): React.ReactElement {
                         tone="critical"
                         accessibilityLabel="Delete banner"
                         onClick={() => {
-
+                          setSelectedBanner(`${item._id}`);
                         }}
                       />
                     </ButtonGroup>
@@ -103,6 +108,45 @@ export default function Home(): React.ReactElement {
           )
       }
     </IndexTable>);
+
+  const deleteModal = (
+  selectedBanner.length > 0 ? 
+  <Frame>
+    <div style={{height: '500px'}}>
+      <Modal
+        open={true}
+        onClose={() => {
+          setSelectedBanner("");
+        }}
+        title="Discard all unsaved changes"
+        primaryAction={{
+          destructive: true,
+          content: 'Delete banner',
+          onAction: async () => {
+            const response = await deleteAnnouncement(selectedBanner);
+            if (response.ok) {
+              fetchAnnouncements(pageNum);
+            } else {
+
+            }
+            setSelectedBanner("");
+          },
+        }}
+        secondaryActions={[
+          {
+            content: 'Cancel',
+            onAction: () => {
+              setSelectedBanner("");
+            },
+          },
+        ]}
+      >
+        <Modal.Section>
+          The announcement bar will be deleted upon confirmation irrecoverably.
+        </Modal.Section>
+      </Modal>
+    </div>
+  </Frame> : <></>);
 
   const isLoading: boolean = shopInfoFetching;
   const pageMarkup: React.ReactElement = isLoading ? (
@@ -120,6 +164,8 @@ export default function Home(): React.ReactElement {
           { announcementsListMarkup }
         </Card>
       </Page>
+      
+      {deleteModal}
     </>
   );
 
