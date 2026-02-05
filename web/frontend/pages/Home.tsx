@@ -7,7 +7,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Card, Page, IndexTable, Button, Badge, ButtonGroup, Frame, Modal, Text } from "@shopify/polaris";
+import { Card, Page, IndexTable, Button, Badge, ButtonGroup, Frame, Modal, Text, InlineStack } from "@shopify/polaris";
 import {EditIcon, DeleteIcon} from '@shopify/polaris-icons';
 import useAnnouncementsStore from "../stores/useAnnouncementsStore";
 import { AnnouncementsPreview } from "../components/common/AnnouncementsPreview";
@@ -42,12 +42,6 @@ export default function Home(): React.ReactElement {
   const announcementsListMarkup = (
     announcementsData ? 
     <>
-    <Button 
-      variant="primary"
-      onClick={() => {
-        navigate("/create");
-      }}
-    >Create</Button>
     <IndexTable
       itemCount={announcementsData ? announcementsData.data.length : 0}
       headings={[
@@ -177,9 +171,22 @@ export default function Home(): React.ReactElement {
         
         <br />
 
-        <Text variant="headingLg" as="h3">
+
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+          <Text variant="headingLg" as="h3">
           Banners
-        </Text>
+          </Text>
+
+        <Button 
+          variant="primary"
+          onClick={() => {
+            navigate("/create");
+          }}
+        >Create</Button>
+        </div>
+
+        
+
         <Card>
           { announcementsListMarkup }
         </Card>

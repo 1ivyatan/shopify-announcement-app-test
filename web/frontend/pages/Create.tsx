@@ -91,7 +91,7 @@ export default function Create(): React.ReactElement {
         </Text>
 
         <Card>
-          <ExtensionPreview contextData={{context: "preview", data: announcement}} />
+          <ExtensionPreview contextData={{context: "preview", data: [announcement]}} />
         </Card>
 
         <Text variant="headingLg" as="h3">

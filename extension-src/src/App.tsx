@@ -18,11 +18,13 @@ export const App = ({ contextData }: { contextData: any }) => {
     setShouldShow(true);
 
     /* send stats */
-    if (contextData.data.length > 0) {
-      contextData.data.map((banner: any) => {
-        console.log(banner)
-        console.log(document.URL)
+    if (contextData.data.length > 0 /*&& contextData.context == "embed"*/) {
+      const ids = contextData.data.map((banner: any) => {
+        return banner._id;
       });
+
+      console.log(ids)
+      console.log(document.URL)
     }
   }, []);
 
@@ -31,18 +33,7 @@ export const App = ({ contextData }: { contextData: any }) => {
   }
 
   return (
-    contextData.context == "preview" ?
     <div className="TSUFFIX-tw-scope">
-      <div style={{
-        width: "100%", padding: "0.5em 1em", lineHeight: "1em",display: "flex",alignItems: "center", justifyContent: "center",
-        fontSize: `${contextData.data.fontSize || 12}pt`, 
-        backgroundColor: `${contextData.data.bgColor || "#000"}`, 
-        color: `${contextData.data.fgColor || "#FFF"}`
-        }}>
-        { contextData.data.text }
-      </div>
-    </div>
-    : <div className="TSUFFIX-tw-scope">
         { 
         contextData.data.map((banner: any) => {
           return (

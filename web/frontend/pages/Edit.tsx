@@ -115,7 +115,7 @@ export default function Edit(): React.ReactElement {
         </Text>
             
         <Card>
-            <ExtensionPreview contextData={{context: "preview", data: announcement}} />
+            <ExtensionPreview contextData={{context: "preview", data: [announcement]}} />
         </Card>
 
         <br />
