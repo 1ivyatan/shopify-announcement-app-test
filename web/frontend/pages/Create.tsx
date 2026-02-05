@@ -9,7 +9,7 @@ import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
 import { Card, Page, Text, Button, Badge, ButtonGroup } from "@shopify/polaris";
 import {EditIcon, DeleteIcon} from '@shopify/polaris-icons';
-import useAnnouncementsStore, { Announcement } from "../stores/useAnnouncementsStore";
+import useAnnouncementsStore, { Announcement, nullAnnouncement } from "../stores/useAnnouncementsStore";
 import { AnnouncementEditor } from "../components/common/AnnouncementEditor";
 import { ExtensionPreview } from "../shared/index";
 
@@ -22,10 +22,7 @@ export default function Create(): React.ReactElement {
   //const { fetchAnnouncements, announcementsData } = useAnnouncementsStore();
   const navigate = useNavigate();
 
-  const [ announcement, setAnnouncement ] = useState<Announcement>({
-    _id: undefined, label: "", enabled: false, text: "", fgColor: "#FFFFFF",
-    bgColor: "#000000", fontSize: 16, createdAt: null, updatedAt: null
-  });
+  const [ announcement, setAnnouncement ] = useState<Announcement>(nullAnnouncement);
 
   // Effects
   useEffect(() => {
@@ -54,7 +51,7 @@ export default function Create(): React.ReactElement {
         </Text>
 
         <Card>
-          <ExtensionPreview contextData={{context: "previewOne", data: {}}} />
+          <ExtensionPreview contextData={{context: "preview", data: announcement}} />
         </Card>
 
         <Text variant="headingLg" as="h3">

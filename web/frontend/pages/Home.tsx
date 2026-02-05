@@ -83,7 +83,7 @@ export default function Home(): React.ReactElement {
                         icon={EditIcon}
                         accessibilityLabel="Add banner"
                         onClick={() => {
-                          navigate("/edit/item._id");
+                          navigate(`/edit/${item._id}`);
                         }}
                       />
                       <Button

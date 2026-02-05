@@ -42,16 +42,37 @@ router.get("/announcement", async (_req: Request, res: Response) => {
       success: true
     }
   });
-/*  return res.status(200).send({
-    data: {
-      enabled: ann?.enabled,
-      text: ann?.text,
-      fgColor: ann?.fgColor,
-      bgColor: ann?.bgColor,
-      fontSize: ann?.fontSize
-    },
-    success: true
-  });*/
+});
+
+router.get("/announcement/:id", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+
+  const id = _req.params.id ?? null;
+
+  if (id) {
+    try {
+      /* prevent someone from accessing banners foreign to them */
+      const ann = await AnnouncementSchema.findOne({"shop": shop, "_id": id}).exec();
+
+      return res.status(200).send({
+        data: ann,
+        meta: {
+          success: true
+        }
+      });
+    } catch (error: any) {
+      console.log(error)
+      return res.status(500).send({error: "Server error"});
+    }
+  } else {
+    return res.status(401).send({
+      error: "Id not supplied"
+    });
+  }
 });
 
 router.post("/announcement", async (_req: Request, res: Response) => {
@@ -82,7 +103,6 @@ router.post("/announcement", async (_req: Request, res: Response) => {
 
     const saved = await banner.save();
 
-    console.log(saved)
    // await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
     //await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
    //   { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
@@ -94,6 +114,46 @@ router.post("/announcement", async (_req: Request, res: Response) => {
       }
     }); 
   } catch (error) {
+    console.log(error)
+    return res.status(500).send({error: "Server error"});
+  }
+});
+
+
+router.put("/announcement", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const sessionShop = session.shop;
+  const client = new shopify.api.clients.Graphql({
+    session,
+  });
+
+  const { _id, shop, enabled, label, text, fgColor, bgColor, fontSize } = _req.body ?? {};
+
+  if (_id == null || shop == null || enabled == null || label == null || text == null || bgColor == null || fgColor == null || fontSize == null) {
+    return res.status(401).send({
+      error: "all body params not supplied"
+    });
+  }
+
+  const saved = await AnnouncementSchema.findOneAndUpdate({_id: _id, shop: sessionShop},
+    {
+      label: label,
+      enabled: enabled,
+      text: text,
+      fgColor: fgColor,
+      bgColor: bgColor,
+      fontSize: fontSize
+    }
+  );
+
+  try {
+    return res.status(200).send({
+      data: saved,
+      meta: {
+        success: true
+      }
+    });
+  } catch (error: any) {
     console.log(error)
     return res.status(500).send({error: "Server error"});
   }
