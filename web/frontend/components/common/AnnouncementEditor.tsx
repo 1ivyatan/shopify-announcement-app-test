@@ -3,18 +3,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Form } from "react-router-dom";
 import { Announcement } from "../../stores/useAnnouncementsStore";
 
-export const AnnouncementEditor = (props: { method: String, afterSubmission: Function, id: String | null }): React.ReactElement => {
+export const AnnouncementEditor = (props: { method: string, afterSubmission: Function, data: Announcement, setData: any}): React.ReactElement => {
     const [ enabledSubmit, setEnabledSubmit ] = useState<boolean>(false);
     const [ fgColor, setFgColor ] = useState({hue: 0,brightness: 0,saturation: 0,});
     const [ bgColor, setBgColor ] = useState({hue: 0,brightness: 100,saturation: 0,});
-    const [ announcement, setAnnouncement ] = useState<Announcement>({
-        _id: null, label: "", enabled: false, text: "", fgColor: "#FFFFFF",
-        bgColor: "#000000", fontSize: 16, createdAt: null, updatedAt: null
-    });
-
-    useEffect(() => {
-
-    }, []);
 
     const validateData = (data: Announcement) => {
         if (
@@ -27,29 +19,43 @@ export const AnnouncementEditor = (props: { method: String, afterSubmission: Fun
         }
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        if (!enabledSubmit) {
+            props.afterSubmission(false);
+        }
 
-        props.afterSubmission();
+        setEnabledSubmit(false);
+
+        const response = await fetch("/api/shop/announcement", {
+            method: props.method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(props.data)
+        });
+
+        props.afterSubmission(response);
+        setEnabledSubmit(true);
     }
 
     return (
         <Form onSubmit={onSubmit}>
             <FormLayout>
+                <FormLayout.Group>
+                    <Checkbox
+                        label="Enabled"
+                        checked={ props.data.enabled }
+                        onChange={ (newValue) => { props.setData({...props.data, enabled: newValue}) }}
+                        helpText={
+                            <span>Show or hide the announcement bar to visitors</span>
+                        }
+                    />
 
-                <Checkbox
-                    label="Enabled"
-                    checked={ announcement.enabled }
-                    onChange={ (newValue) => { setAnnouncement({...announcement, enabled: newValue}) }}
-                    helpText={
-                        <span>Show or hide the announcement bar to visitors</span>
-                    }
-                />
+                    <Button submit={true} variant="primary" disabled={!enabledSubmit}>Save</Button>
+                </FormLayout.Group>
 
-                
                 <FormLayout.Group>
                     <TextField
-                        value={announcement.label}
-                        onChange={ (newValue) => { setAnnouncement({...announcement, label: newValue}); validateData({...announcement, label: newValue}); }}
+                        value={props.data.label}
+                        onChange={ (newValue) => { props.setData({...props.data, label: newValue}); validateData({...props.data, label: newValue}); }}
                         label="Label"
                         type="text"
                         autoComplete="off"
@@ -59,8 +65,8 @@ export const AnnouncementEditor = (props: { method: String, afterSubmission: Fun
                     />
 
                     <TextField
-                        value={announcement.text}
-                        onChange={ (newValue) => { setAnnouncement({...announcement, text: newValue}); validateData({...announcement, text: newValue});  }}
+                        value={props.data.text}
+                        onChange={ (newValue) => { props.setData({...props.data, text: newValue}); validateData({...props.data, text: newValue});  }}
                         label="Text"
                         type="text"
                         autoComplete="off"
@@ -72,8 +78,8 @@ export const AnnouncementEditor = (props: { method: String, afterSubmission: Fun
 
                 <FormLayout.Group>
                     <TextField
-                        value={`${announcement.fontSize}`}
-                        onChange={ (newValue) => { setAnnouncement({...announcement, fontSize: parseInt(newValue)}); validateData({...announcement, fontSize: parseInt(newValue)});  }}
+                        value={`${props.data.fontSize}`}
+                        onChange={ (newValue) => { props.setData({...props.data, fontSize: parseInt(newValue)}); validateData({...props.data, fontSize: parseInt(newValue)});  }}
                         label="Font size"
                         type="number"
                         autoComplete="off"
@@ -85,18 +91,17 @@ export const AnnouncementEditor = (props: { method: String, afterSubmission: Fun
                         <Text as="p">Text color:</Text>
                         <ColorPicker
                             color={fgColor}
-                            onChange={(newValue) => { setFgColor(newValue); setAnnouncement({...announcement, fgColor: hsbToHex(newValue)}); }}
+                            onChange={(newValue) => { setFgColor(newValue); props.setData({...props.data, fgColor: hsbToHex(newValue)}); }}
                         />
                     </FormLayout>
                     <FormLayout>
                         <Text as="p">Background color:</Text>
                         <ColorPicker
                             color={bgColor}
-                            onChange={(newValue) => { setBgColor(newValue); setAnnouncement({...announcement, bgColor: hsbToHex(newValue)}); }}
+                            onChange={(newValue) => { setBgColor(newValue); props.setData({...props.data, bgColor: hsbToHex(newValue)}); }}
                         />
                     </FormLayout>
                 </FormLayout.Group>
-              <Button submit={true} variant="primary" disabled={!enabledSubmit}>Save</Button>
             </FormLayout>
         </Form>
     );

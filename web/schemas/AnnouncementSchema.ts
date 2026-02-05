@@ -1,10 +1,6 @@
 import mongoose, { Schema, InferSchemaType } from "mongoose";
 
 export const AnnouncementSchema = new Schema({
-  id: {
-    type: String,
-    required: [true, "Id is required"],
-  },
   shop: {
     type: String,
     required: [true, "Shop name is required"],

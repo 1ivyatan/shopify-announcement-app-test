@@ -13,7 +13,7 @@ export interface IAnnouncementPreview
 
 export interface Announcement
 {
-    _id: string | null,
+    _id: string | undefined,
     label: string,
     enabled: boolean,
     text: string,

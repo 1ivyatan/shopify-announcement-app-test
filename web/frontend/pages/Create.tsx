@@ -7,9 +7,9 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Card, Page, IndexTable, Button, Badge, ButtonGroup } from "@shopify/polaris";
+import { Card, Page, Text, Button, Badge, ButtonGroup } from "@shopify/polaris";
 import {EditIcon, DeleteIcon} from '@shopify/polaris-icons';
-import useAnnouncementsStore from "../stores/useAnnouncementsStore";
+import useAnnouncementsStore, { Announcement } from "../stores/useAnnouncementsStore";
 import { AnnouncementEditor } from "../components/common/AnnouncementEditor";
 import { ExtensionPreview } from "../shared/index";
 
@@ -22,13 +22,23 @@ export default function Create(): React.ReactElement {
   //const { fetchAnnouncements, announcementsData } = useAnnouncementsStore();
   const navigate = useNavigate();
 
+  const [ announcement, setAnnouncement ] = useState<Announcement>({
+    _id: undefined, label: "", enabled: false, text: "", fgColor: "#FFFFFF",
+    bgColor: "#000000", fontSize: 16, createdAt: null, updatedAt: null
+  });
+
   // Effects
   useEffect(() => {
     shopify.loading(shopInfoFetching);
   }, [shopInfoFetching, shopify]);
 
-  const afterSubmission = () => {
-    console.log("123")
+  const afterSubmission = async (response: Response) => {
+    if (response.ok) {
+      const json = await response.json();
+      navigate(`/edit/${json.data._id}`);
+    } else {
+
+    }
   }
 
   const isLoading: boolean = shopInfoFetching;
@@ -36,9 +46,22 @@ export default function Create(): React.ReactElement {
     <Loader />
   ) : (
     <>
-      <Page fullWidth>
+      <Page 
+        fullWidth
+      >
+        <Text variant="headingLg" as="h3">
+          Preview
+        </Text>
+
         <Card>
-          <AnnouncementEditor method={"post"} afterSubmission={afterSubmission} id={null} />
+          <ExtensionPreview contextData={{context: "previewOne", data: {}}} />
+        </Card>
+
+        <Text variant="headingLg" as="h3">
+          Properties
+        </Text>
+        <Card>
+          <AnnouncementEditor method={"post"} afterSubmission={afterSubmission} setData={setAnnouncement} data={announcement}/>
         </Card>
       </Page>
     </>

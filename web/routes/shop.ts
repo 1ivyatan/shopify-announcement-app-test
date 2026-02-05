@@ -17,7 +17,6 @@ import { error } from "console";
 
 const router: Router = express.Router();
 
-
 router.get("/announcement", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
   const { shop } = session;
@@ -27,7 +26,14 @@ router.get("/announcement", async (_req: Request, res: Response) => {
 
   const anns = await AnnouncementSchema.aggregate([ 
     { "$match": {"shop": shop} }, 
-    { "$project": { _id: -1, shop: 1, label: 1, enabled: 1, text: { "$substrCP": [ "$text", 0, 50 ]  }, createdAt: 1, updatedAt: 1 } }
+    { "$project": { 
+      _id: -1, 
+      shop: 1, 
+      label: 1, 
+      enabled: 1, 
+      text: { "$substrCP": [ "$text", 0, 50 ]  }, 
+      createdAt: 1, 
+      updatedAt: 1 } }
   ]).exec();
 
   return res.status(200).send({
@@ -55,23 +61,40 @@ router.post("/announcement", async (_req: Request, res: Response) => {
     session,
   });
 
-  const { enabled, text, fgColor, bgColor, fontSize } = _req.body ?? {};
+  const { enabled, text, fgColor, bgColor, fontSize, label } = _req.body ?? {};
 
-  if (enabled == null || text == null) {
+  if (enabled == null || text == null || fgColor == null || bgColor == null || fontSize == null || label == null) {
     return res.status(401).send({
       error: "all body params not supplied"
     });
   }
 
   try {
-    await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
-    await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
-      { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
-    , { new: true, upsert: true });
+    const banner = new AnnouncementSchema({
+      enabled: enabled,
+      shop: shop,
+      text: text, 
+      fgColor: fgColor,
+      bgColor: bgColor,
+      fontSize: fontSize,
+      label: label
+    });
+
+    const saved = await banner.save();
+
+    console.log(saved)
+   // await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
+    //await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
+   //   { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
+    //, { new: true, upsert: true });
     return res.status(200).send({
-      success: true
+      data: saved,
+      meta: {
+        success: true
+      }
     }); 
   } catch (error) {
+    console.log(error)
     return res.status(500).send({error: "Server error"});
   }
 });

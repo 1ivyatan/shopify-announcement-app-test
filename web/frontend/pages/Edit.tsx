@@ -1,6 +1,6 @@
 // Modules
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // Shopify
 import { useAppBridge } from "@shopify/app-bridge-react";
 // Pages
@@ -19,6 +19,7 @@ export default function Edit(): React.ReactElement {
   const { fetching: shopInfoFetching } = useShopInfoStore();
   //const { fetchAnnouncements, announcementsData } = useAnnouncementsStore();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   // Effects
   useEffect(() => {
