@@ -172,7 +172,7 @@ export default function Home(): React.ReactElement {
         <br />
 
 
-        <div style={{display: "flex", justifyContent: "space-between"}}>
+        <div style={{display: "flex", justifyContent: "space-between", marginBottom:".5rem"}}>
           <Text variant="headingLg" as="h3">
           Banners
           </Text>
