@@ -27,29 +27,6 @@ export const AnnouncementEditor = (props: { setValid: any, data: Announcement, s
 
     }, [props.data]);
 
-    /*
-    const onSubmit = useCallback(async () => {
-        let response: Response | undefined = undefined;
-        if (!enabledSubmit) {
-            props.afterSubmission(false);
-        }
-
-        setEnabledSubmit(false);
-
-        switch (props.method) {
-            case "PUT":
-                response = await putAnnouncement(props.data);
-                props.afterSubmission(response);
-                break;
-            case "POST":
-                response = await postAnnouncement(props.data);
-                props.afterSubmission(response);
-                break;
-        }
-
-        setEnabledSubmit(true);
-    }, [props.data]);*/
-
     return (
         props.data ?
         <Form>

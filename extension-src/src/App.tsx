@@ -16,6 +16,14 @@ export const App = ({ contextData }: { contextData: any }) => {
   //actual should show logic...
   useEffect(() => {
     setShouldShow(true);
+
+    /* send stats */
+    if (contextData.data.length > 0) {
+      contextData.data.map((banner: any) => {
+        console.log(banner)
+        console.log(document.URL)
+      });
+    }
   }, []);
 
   if (!shouldShow) {
@@ -23,9 +31,8 @@ export const App = ({ contextData }: { contextData: any }) => {
   }
 
   return (
-    contextData.data.enabled || contextData.context == "preview" ?
+    contextData.context == "preview" ?
     <div className="TSUFFIX-tw-scope">
-
       <div style={{
         width: "100%", padding: "0.5em 1em", lineHeight: "1em",display: "flex",alignItems: "center", justifyContent: "center",
         fontSize: `${contextData.data.fontSize || 12}pt`, 
@@ -34,9 +41,23 @@ export const App = ({ contextData }: { contextData: any }) => {
         }}>
         { contextData.data.text }
       </div>
-     
     </div>
-    : <div></div>
+    : <div className="TSUFFIX-tw-scope">
+        { 
+        contextData.data.map((banner: any) => {
+          return (
+            <div style={{
+              width: "100%", padding: "0.5em 1em", lineHeight: "1em",display: "flex",alignItems: "center", justifyContent: "center",
+              fontSize: `${banner.fontSize || 12}pt`, 
+              backgroundColor: `${banner.bgColor || "#000"}`, 
+              color: `${banner.fgColor || "#FFF"}`
+              }}
+            >
+              { banner.text }
+            </div>
+          );
+        })}
+      </div>
   );
 };  //contextData.enabled
 

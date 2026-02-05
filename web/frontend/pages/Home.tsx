@@ -7,9 +7,10 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 // Stores
 import useShopInfoStore from "../stores/useShopInfoStore";
 import { Loader } from "../components/common/Loader";
-import { Card, Page, IndexTable, Button, Badge, ButtonGroup, Frame, Modal } from "@shopify/polaris";
+import { Card, Page, IndexTable, Button, Badge, ButtonGroup, Frame, Modal, Text } from "@shopify/polaris";
 import {EditIcon, DeleteIcon} from '@shopify/polaris-icons';
 import useAnnouncementsStore from "../stores/useAnnouncementsStore";
+import { AnnouncementsPreview } from "../components/common/AnnouncementsPreview";
 
 
 // Start of component
@@ -167,6 +168,18 @@ export default function Home(): React.ReactElement {
   ) : (
     <>
       <Page fullWidth>
+        <Text variant="headingLg" as="h3">
+          Preview
+        </Text>
+        <Card>
+          <AnnouncementsPreview />
+        </Card>
+        
+        <br />
+
+        <Text variant="headingLg" as="h3">
+          Banners
+        </Text>
         <Card>
           { announcementsListMarkup }
         </Card>

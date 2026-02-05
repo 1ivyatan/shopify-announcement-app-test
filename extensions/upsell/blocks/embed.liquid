@@ -1,7 +1,7 @@
 {% assign meta = app.metafields.libautech_leons %}
 
 {% assign s = shop.permanent_domain %}
-{% assign ann = meta.announcementBar %}
+{% assign anns = meta.announcementBars %}
 
 {% capture should_render %}
 {% render 'should-render', meta: meta, shop: s %}
@@ -20,7 +20,7 @@
     window.TSUFFIXContext = window.TSUFFIXContext || {};
     window.TSUFFIXContext['TSUFFIX-embed-target'] = {
       context: 'embed',
-      data: {{ ann }}
+      data: {{ anns }}
     };
     
     const code = await window.TSUFFIX_loadCode();
@@ -58,7 +58,7 @@
 
 {% schema %}
 {
-"name": "TEMP embed",
+"name": "ann bar embed",
 "target": "head",
 "stylesheet": "index.css",
 "settings": []

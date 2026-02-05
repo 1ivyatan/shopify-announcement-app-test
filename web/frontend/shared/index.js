@@ -122,11 +122,17 @@ const App = ({ contextData }) => {
   const [shouldShow, setShouldShow] = useState(false);
   useEffect(() => {
     setShouldShow(true);
+    if (contextData.data.length > 0) {
+      contextData.data.map((banner) => {
+        console.log(banner);
+        console.log(document.URL);
+      });
+    }
   }, []);
   if (!shouldShow) {
     return null;
   }
-  return contextData.data.enabled || contextData.context == "preview" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "TSUFFIX-tw-scope", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+  return contextData.context == "preview" ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "TSUFFIX-tw-scope", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
     width: "100%",
     padding: "0.5em 1em",
     lineHeight: "1em",
@@ -136,7 +142,25 @@ const App = ({ contextData }) => {
     fontSize: `${contextData.data.fontSize || 12}pt`,
     backgroundColor: `${contextData.data.bgColor || "#000"}`,
     color: `${contextData.data.fgColor || "#FFF"}`
-  }, children: contextData.data.text }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", {});
+  }, children: contextData.data.text }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "TSUFFIX-tw-scope", children: contextData.data.map((banner) => {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        style: {
+          width: "100%",
+          padding: "0.5em 1em",
+          lineHeight: "1em",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: `${banner.fontSize || 12}pt`,
+          backgroundColor: `${banner.bgColor || "#000"}`,
+          color: `${banner.fgColor || "#FFF"}`
+        },
+        children: banner.text
+      }
+    );
+  }) });
 };
 export {
   App as ExtensionPreview

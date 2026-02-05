@@ -14,16 +14,26 @@ export const AnnouncementSchema = new Schema({
     required: [true, "Enabled is required"],
   },
   text: {
-    type: String
+    type: String,
+    required: [true, "Text is required"],
   },
   fgColor: {
-    type: String
+    type: String,
+    required: [true, "Foregound color is required"],
   },
   bgColor: {
-    type: String
+    type: String,
+    required: [true, "Background color is required"],
   },
   fontSize: {
-    type: Number
+    type: Number,
+    required: [true, "Font size is required"],
+    default: 16
+  },
+  views: {
+    type: Number,
+    required: [true, "Count is required"],
+    default: 0
   }
 }, { timestamps: true });
 

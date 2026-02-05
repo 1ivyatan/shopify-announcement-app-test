@@ -17,6 +17,47 @@ import { error } from "console";
 
 const router: Router = express.Router();
 
+const updateMetafield = async (session: any) => {
+  const { shop } = session;
+  const anns = await AnnouncementSchema.aggregate([
+    { "$match": {"shop": shop, "enabled": true} },
+    { "$project": { 
+      _id: 1,
+      text: 1, 
+      fgColor: 1,
+      bgColor: 1,
+      fontSize: 1
+    } },
+    { "$sort": { _id: -1 } }
+  ]).exec();
+
+  await setMetafield(session, "announcementBars", JSON.stringify(anns), "json");
+}
+
+router.get("/announcement/meta", async (_req: Request, res: Response) => {
+  const session = res.locals.shopify.session;
+  const { shop } = session;
+  const anns = await AnnouncementSchema.aggregate([
+    { "$match": {"shop": shop, "enabled": true} },
+    { "$project": { 
+      _id: 1,
+      text: 1, 
+      fgColor: 1,
+      bgColor: 1,
+      fontSize: 1
+    } },
+    { "$sort": { _id: -1 } }
+  ]).exec();
+
+  return res.status(200).send({
+    data: anns,
+    meta: {
+      success: true
+    }
+  });
+
+});
+
 router.get("/announcement", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
   const { shop } = session;
@@ -112,6 +153,7 @@ router.post("/announcement", async (_req: Request, res: Response) => {
 
     const saved = await banner.save();
 
+    updateMetafield(session);
    // await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
     //await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
    //   { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
@@ -144,18 +186,18 @@ router.put("/announcement", async (_req: Request, res: Response) => {
     });
   }
 
-  const saved = await AnnouncementSchema.findOneAndUpdate({_id: _id, shop: sessionShop},
-    {
-      label: label,
-      enabled: enabled,
-      text: text,
-      fgColor: fgColor,
-      bgColor: bgColor,
-      fontSize: fontSize
-    }
-  );
-
   try {
+    const saved = await AnnouncementSchema.findOneAndUpdate({_id: _id, shop: sessionShop},
+      {
+        label: label,
+        enabled: enabled,
+        text: text,
+        fgColor: fgColor,
+        bgColor: bgColor,
+        fontSize: fontSize
+      }
+    );
+    updateMetafield(session);
     return res.status(200).send({
       data: saved,
       meta: {
@@ -183,6 +225,7 @@ router.delete("/announcement/:id", async (_req: Request, res: Response) => {
       /* prevent someone from accessing banners foreign to them */
       const ann = await AnnouncementSchema.findOne({"shop": shop, "_id": id}).exec();
       await AnnouncementSchema.deleteOne({"shop": shop, "_id": id}).exec();
+      updateMetafield(session);
 
       return res.status(200).send({
         data: ann,

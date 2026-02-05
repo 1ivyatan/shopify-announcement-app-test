@@ -32,6 +32,11 @@ export const nullAnnouncement: Announcement = {
 const useAnnouncementsStore = create((set, get) => ({
     announcementsData: null,
     loadingStatus: "done",
+    
+    fetchMetaAnnouncements: async () => {
+        return await fetch(`/api/shop/announcement/meta`);
+    },
+
     fetchAnnouncements: async (page: number): Promise<void> => {
         set({announcementsData: null});
         const response = await fetch(`/api/shop/announcement?page=${page}`);
