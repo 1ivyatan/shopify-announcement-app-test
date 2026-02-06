@@ -7,6 +7,7 @@ export interface IAnnouncementPreview
     label: string,
     enabled: boolean,
     text: string,
+    views: Number,
     createdAt: Date,
     updatedAt: Date
 }
@@ -32,7 +33,7 @@ export const nullAnnouncement: Announcement = {
 const useAnnouncementsStore = create((set, get) => ({
     announcementsData: null,
     loadingStatus: "done",
-    
+
     fetchMetaAnnouncements: async () => {
         return await fetch(`/api/shop/announcement/meta`);
     },

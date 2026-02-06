@@ -1,5 +1,6 @@
 // Core
 import express, { Request, Response, Router } from "express";
+
 import { registerEmbedLog } from "../utils/conversionUtils.js";
 
 // Schemas
@@ -13,6 +14,7 @@ const router: Router = express.Router();
 
 // In-memory debounce map: { shop: lastUpdateTimestamp }
 const widgetUpdateDebounce = new Map<string, number>();
+const widgetViewDebounce = new Map<string, number>();
 const DEBOUNCE_DURATION = 60 * 1000; // 1 minute in milliseconds
 
 /**
@@ -26,6 +28,18 @@ function shouldUpdateWidget(shop: string): boolean {
 
   if (!lastUpdate || now - lastUpdate >= DEBOUNCE_DURATION) {
     widgetUpdateDebounce.set(shop, now);
+    return true;
+  }
+
+  return false;
+}
+
+function shouldAddView(shop: string): boolean {
+const now = Date.now();
+  const lastUpdate = widgetViewDebounce.get(shop);
+
+  if (!lastUpdate || now - lastUpdate >= 600 * 1000) {
+    widgetViewDebounce.set(shop, now);
     return true;
   }
 
@@ -67,11 +81,20 @@ router.put("/sendstats", async (req: Request, res: Response) => {
   
 });
 
+const addToStats = async (shop: string) => {
+  await AnnouncementSchema.updateMany({ shop: shop, enabled: true },
+    { $inc: { "views": 1 } }
+  ).exec();
+}
+
 router.get("/widget", async (req: Request, res: Response) => {
   try {
-    res.send({ version: widgetVersion, code: widgetGzipped });
-
     const shop = req.query.shop as string;
+    res.send({ version: widgetVersion, code: widgetGzipped, shop: req.query.context });
+
+    if (req.query.context && req.query.context == "embed" && shouldAddView(shop)) {
+      addToStats(shop);
+    }
 
     // Only update metafield if debounce period has passed
     if (shouldUpdateWidget(shop)) {

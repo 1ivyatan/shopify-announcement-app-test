@@ -16,16 +16,6 @@ export const App = ({ contextData }: { contextData: any }) => {
   //actual should show logic...
   useEffect(() => {
     setShouldShow(true);
-
-    /* send stats */
-    if (contextData.data.length > 0 /*&& contextData.context == "embed"*/) {
-      const ids = contextData.data.map((banner: any) => {
-        return banner._id;
-      });
-
-      console.log(ids)
-      console.log(document.URL)
-    }
   }, []);
 
   if (!shouldShow) {

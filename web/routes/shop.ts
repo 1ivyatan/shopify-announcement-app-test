@@ -75,6 +75,7 @@ router.get("/announcement", async (_req: Request, res: Response) => {
       shop: 1, 
       label: 1, 
       enabled: 1, 
+      views: 1,
       text: { "$substrCP": [ "$text", 0, 50 ]  }, 
       createdAt: 1, 
       updatedAt: 1 } },

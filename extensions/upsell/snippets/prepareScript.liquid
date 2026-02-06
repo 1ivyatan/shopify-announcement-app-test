@@ -16,14 +16,12 @@
 
         // No metafield, fetch from proxy
         try {
-            const response = await fetch('/apps/libautech-upsell/widget');
+            const response = await fetch('/apps/libautech-upsell/widget?context=embed');
             if (!response.ok) throw new Error('Failed to fetch widget');
 
             const code = await response.json();
 
             window.TSUFFIX_CODE = code.code;
-
-            console.log(response);
 
             return {
                 code: code.code,

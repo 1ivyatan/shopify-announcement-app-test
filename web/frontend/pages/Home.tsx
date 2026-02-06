@@ -83,7 +83,7 @@ export default function Home(): React.ReactElement {
                   </IndexTable.Cell>
 
                   <IndexTable.Cell>
-                    0
+                    {item.views ?? 0}
                   </IndexTable.Cell>
 
                   <IndexTable.Cell>

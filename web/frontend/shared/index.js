@@ -122,13 +122,6 @@ const App = ({ contextData }) => {
   const [shouldShow, setShouldShow] = useState(false);
   useEffect(() => {
     setShouldShow(true);
-    if (contextData.data.length > 0) {
-      const ids = contextData.data.map((banner) => {
-        return banner._id;
-      });
-      console.log(ids);
-      console.log(document.URL);
-    }
   }, []);
   if (!shouldShow) {
     return null;
