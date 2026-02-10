@@ -34,6 +34,10 @@ const updateMetafield = async (session: any) => {
   await setMetafield(session, "announcementBars", JSON.stringify(anns), "json");
 }
 
+router.get("/announcement/stats", async (_req: Request, res: Response) => {
+  
+});
+
 router.get("/announcement/meta", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
   const { shop } = session;

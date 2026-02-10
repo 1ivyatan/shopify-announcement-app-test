@@ -9,6 +9,7 @@ import { registerEmbedLog } from "../utils/conversionUtils.js";
 import { widgetGzipped, widgetVersion } from "../constants/widgetGzipped.js";
 import { setCodeMetafield } from "../utils/widgetScriptUtils.js";
 import AnnouncementSchema from "../schemas/AnnouncementSchema.js";
+import AnnouncementStatSchema from "../schemas/AnnouncementStatSchema.js";
 
 const router: Router = express.Router();
 
@@ -82,9 +83,42 @@ router.put("/sendstats", async (req: Request, res: Response) => {
 });
 
 const addToStats = async (shop: string) => {
-  await AnnouncementSchema.updateMany({ shop: shop, enabled: true },
-    { $inc: { "views": 1 } }
-  ).exec();
+  const anns = await AnnouncementSchema.find({ shop: shop, enabled: true }).lean();
+
+  let ids = anns.map((ann) => {
+    return ann._id.toString();
+  });
+
+  await AnnouncementSchema.updateMany({ shop: shop, _id: { $in: ids } }, { "$inc": { "views": 1 } }).exec();
+
+  const startOfDay = new Date();
+  startOfDay.setHours(0, 0, 0, 0);
+
+  const endOfDay = new Date();
+  endOfDay.setHours(23, 59, 59, 999);
+
+  ids.map(async (id) => {
+    await AnnouncementStatSchema.updateMany({
+      shop: shop, 
+      announcementId: id, 
+      updatedAt: { 
+        $gte: startOfDay,
+        $lte: endOfDay
+      }}, 
+      //}, [
+      [
+        { "$set": { 
+          "announcementId": id,
+          "views": { $add: [ { $ifNull: ['$views', 0] },  1 ] }
+        } },
+      ],
+      {new: true,upsert: true}
+    ).exec();
+
+    return true;
+  });
+
+  
 }
 
 router.get("/widget", async (req: Request, res: Response) => {
