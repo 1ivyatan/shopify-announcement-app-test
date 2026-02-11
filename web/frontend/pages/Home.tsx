@@ -166,14 +166,8 @@ export default function Home(): React.ReactElement {
           Preview
         </Text>
         <Card>
-          {
-            (announcementsData && announcementsData.length > 0)
-            ? <AnnouncementsPreview />
-            : ( 
-      <Text variant="bodyLg" as="p">
-        No banners have been created or enabled. Get started creating one!
-      </Text> )
-          }
+          <AnnouncementsPreview />
+          
         </Card>
         
         <br />
