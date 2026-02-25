@@ -20,46 +20,47 @@ const router: Router = express.Router();
 const updateMetafield = async (session: any) => {
   const { shop } = session;
   const anns = await AnnouncementSchema.aggregate([
-    { "$match": {"shop": shop, "enabled": true} },
-    { "$project": { 
-      _id: 1,
-      text: 1, 
-      fgColor: 1,
-      bgColor: 1,
-      fontSize: 1
-    } },
-    { "$sort": { _id: -1 } }
+    { $match: { shop: shop, enabled: true } },
+    {
+      $project: {
+        _id: 1,
+        text: 1,
+        fgColor: 1,
+        bgColor: 1,
+        fontSize: 1,
+      },
+    },
+    { $sort: { _id: -1 } },
   ]).exec();
 
   await setMetafield(session, "announcementBars", JSON.stringify(anns), "json");
-}
+};
 
-router.get("/announcement/stats", async (_req: Request, res: Response) => {
-  
-});
+router.get("/announcement/stats", async (_req: Request, res: Response) => {});
 
 router.get("/announcement/meta", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
   const { shop } = session;
   const anns = await AnnouncementSchema.aggregate([
-    { "$match": {"shop": shop, "enabled": true} },
-    { "$project": { 
-      _id: 1,
-      text: 1, 
-      fgColor: 1,
-      bgColor: 1,
-      fontSize: 1
-    } },
-    { "$sort": { _id: -1 } }
+    { $match: { shop: shop, enabled: true } },
+    {
+      $project: {
+        _id: 1,
+        text: 1,
+        fgColor: 1,
+        bgColor: 1,
+        fontSize: 1,
+      },
+    },
+    { $sort: { _id: -1 } },
   ]).exec();
 
   return res.status(200).send({
     data: anns,
     meta: {
-      success: true
-    }
+      success: true,
+    },
   });
-
 });
 
 router.get("/announcement", async (_req: Request, res: Response) => {
@@ -72,20 +73,23 @@ router.get("/announcement", async (_req: Request, res: Response) => {
   const { page } = _req.query ?? 0;
   const count = 10;
 
-  const anns = await AnnouncementSchema.aggregate([ 
-    { "$match": {"shop": shop} }, 
-    { "$project": { 
-      _id: 1, 
-      shop: 1, 
-      label: 1, 
-      enabled: 1, 
-      views: 1,
-      text: { "$substrCP": [ "$text", 0, 50 ]  }, 
-      createdAt: 1, 
-      updatedAt: 1 } },
-    { "$sort": { _id: -1 } },
-    { $skip: (parseInt(`${page}`)) * count },
-    { "$limit": count },
+  const anns = await AnnouncementSchema.aggregate([
+    { $match: { shop: shop } },
+    {
+      $project: {
+        _id: 1,
+        shop: 1,
+        label: 1,
+        enabled: 1,
+        views: 1,
+        text: { $substrCP: ["$text", 0, 50] },
+        createdAt: 1,
+        updatedAt: 1,
+      },
+    },
+    { $sort: { _id: -1 } },
+    { $skip: parseInt(`${page}`) * count },
+    { $limit: count },
   ]).exec();
 
   return res.status(200).send({
@@ -94,8 +98,8 @@ router.get("/announcement", async (_req: Request, res: Response) => {
       page: parseInt(`${page}`),
       success: true,
       hasNext: anns.length == count,
-      hasPrev: parseInt(`${page}`) > 0 || anns.length == 0
-    }
+      hasPrev: parseInt(`${page}`) > 0 || anns.length == 0,
+    },
   });
 });
 
@@ -111,21 +115,21 @@ router.get("/announcement/:id", async (_req: Request, res: Response) => {
   if (id) {
     try {
       /* prevent someone from accessing banners foreign to them */
-      const ann = await AnnouncementSchema.findOne({"shop": shop, "_id": id}).exec();
+      const ann = await AnnouncementSchema.findOne({ shop: shop, _id: id }).exec();
 
       return res.status(200).send({
         data: ann,
         meta: {
-          success: true
-        }
+          success: true,
+        },
       });
     } catch (error: any) {
-      console.log(error)
-      return res.status(500).send({error: "Server error"});
+      console.log(error);
+      return res.status(500).send({ error: "Server error" });
     }
   } else {
     return res.status(401).send({
-      error: "Id not supplied"
+      error: "Id not supplied",
     });
   }
 });
@@ -139,9 +143,16 @@ router.post("/announcement", async (_req: Request, res: Response) => {
 
   const { enabled, text, fgColor, bgColor, fontSize, label } = _req.body ?? {};
 
-  if (enabled == null || text == null || fgColor == null || bgColor == null || fontSize == null || label == null) {
+  if (
+    enabled == null ||
+    text == null ||
+    fgColor == null ||
+    bgColor == null ||
+    fontSize == null ||
+    label == null
+  ) {
     return res.status(401).send({
-      error: "all body params not supplied"
+      error: "all body params not supplied",
     });
   }
 
@@ -149,32 +160,31 @@ router.post("/announcement", async (_req: Request, res: Response) => {
     const banner = new AnnouncementSchema({
       enabled: enabled,
       shop: shop,
-      text: text, 
+      text: text,
       fgColor: fgColor,
       bgColor: bgColor,
       fontSize: fontSize,
-      label: label
+      label: label,
     });
 
     const saved = await banner.save();
 
     updateMetafield(session);
-   // await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
-    //await AnnouncementSchema.findOneAndUpdate({"shop": shop}, 
-   //   { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
+    // await setMetafield(session, "announcementBar", JSON.stringify({ enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize }), "json");
+    //await AnnouncementSchema.findOneAndUpdate({"shop": shop},
+    //   { enabled: enabled, text: text, fgColor: fgColor, bgColor: bgColor, fontSize: fontSize}
     //, { new: true, upsert: true });
     return res.status(200).send({
       data: saved,
       meta: {
-        success: true
-      }
-    }); 
+        success: true,
+      },
+    });
   } catch (error) {
-    console.log(error)
-    return res.status(500).send({error: "Server error"});
+    console.log(error);
+    return res.status(500).send({ error: "Server error" });
   }
 });
-
 
 router.put("/announcement", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
@@ -185,36 +195,45 @@ router.put("/announcement", async (_req: Request, res: Response) => {
 
   const { _id, shop, enabled, label, text, fgColor, bgColor, fontSize } = _req.body ?? {};
 
-  if (_id == null || shop == null || enabled == null || label == null || text == null || bgColor == null || fgColor == null || fontSize == null) {
+  if (
+    _id == null ||
+    shop == null ||
+    enabled == null ||
+    label == null ||
+    text == null ||
+    bgColor == null ||
+    fgColor == null ||
+    fontSize == null
+  ) {
     return res.status(401).send({
-      error: "all body params not supplied"
+      error: "all body params not supplied",
     });
   }
 
   try {
-    const saved = await AnnouncementSchema.findOneAndUpdate({_id: _id, shop: sessionShop},
+    const saved = await AnnouncementSchema.findOneAndUpdate(
+      { _id: _id, shop: sessionShop },
       {
         label: label,
         enabled: enabled,
         text: text,
         fgColor: fgColor,
         bgColor: bgColor,
-        fontSize: fontSize
+        fontSize: fontSize,
       }
     );
     updateMetafield(session);
     return res.status(200).send({
       data: saved,
       meta: {
-        success: true
-      }
+        success: true,
+      },
     });
   } catch (error: any) {
-    console.log(error)
-    return res.status(500).send({error: "Server error"});
+    console.log(error);
+    return res.status(500).send({ error: "Server error" });
   }
 });
-
 
 router.delete("/announcement/:id", async (_req: Request, res: Response) => {
   const session = res.locals.shopify.session;
@@ -228,23 +247,23 @@ router.delete("/announcement/:id", async (_req: Request, res: Response) => {
   if (id) {
     try {
       /* prevent someone from accessing banners foreign to them */
-      const ann = await AnnouncementSchema.findOne({"shop": shop, "_id": id}).exec();
-      await AnnouncementSchema.deleteOne({"shop": shop, "_id": id}).exec();
+      const ann = await AnnouncementSchema.findOne({ shop: shop, _id: id }).exec();
+      await AnnouncementSchema.deleteOne({ shop: shop, _id: id }).exec();
       updateMetafield(session);
 
       return res.status(200).send({
         data: ann,
         meta: {
-          success: true
-        }
+          success: true,
+        },
       });
     } catch (error: any) {
-      console.log(error)
-      return res.status(500).send({error: "Server error"});
+      console.log(error);
+      return res.status(500).send({ error: "Server error" });
     }
   } else {
     return res.status(401).send({
-      error: "Id not supplied"
+      error: "Id not supplied",
     });
   }
 });
