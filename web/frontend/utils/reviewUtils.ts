@@ -12,3 +12,8 @@ export const attemptReviewModal = async () => {
     console.error("Error requesting review:", error);
   }
 };
+
+export const hasReviewed = (): boolean => {
+  const review: string | null = localStorage.getItem("openedReview");
+  return review === "true";
+};

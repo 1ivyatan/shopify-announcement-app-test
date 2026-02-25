@@ -18,7 +18,8 @@ import { ExtensionPreview } from "../shared/index";
 
 import { AnnouncementEditor } from "../components/common/AnnouncementEditor";
 import { AlertMessage, AlertMessageData } from "../components/common/AlertMessage";
-import { attemptReviewModal } from "../utils/reviewUtils";
+import { attemptReviewModal, hasReviewed } from "../utils/reviewUtils";
+import { ReviewMessage } from "../components/common/ReviewMessage";
 
 // Start of component
 export default function Edit(): React.ReactElement {
@@ -30,6 +31,7 @@ export default function Edit(): React.ReactElement {
   const [valid, setValid] = useState<boolean>(false);
 
   const [activeMessage, setActiveMessage] = useState<boolean>(false);
+  const [activeReviewMessage, setActiveReviewMessage] = useState<boolean>(false);
   const [message, setMessage] = useState<AlertMessageData>({
     text: "",
     setActive: setActiveMessage,
@@ -40,6 +42,12 @@ export default function Edit(): React.ReactElement {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
+  const openReviewDiag = () => {
+    if (true) {
+      setActiveReviewMessage(true);
+    }
+  };
+
   // Effects
   useEffect(() => {
     shopify.loading(shopInfoFetching);
@@ -49,6 +57,7 @@ export default function Edit(): React.ReactElement {
         if (data) {
           const ann: Announcement = data.data;
           setAnnouncement(ann);
+          openReviewDiag();
         } else {
           console.log("none");
         }
@@ -57,6 +66,11 @@ export default function Edit(): React.ReactElement {
   }, [shopInfoFetching, shopify]);
 
   const infoBanner: React.ReactElement = activeMessage ? <AlertMessage data={message} /> : <></>;
+  const reviewBanner = activeReviewMessage ? (
+    <ReviewMessage setActive={setActiveReviewMessage} />
+  ) : (
+    <></>
+  );
 
   const errorMarkup: React.ReactElement = <ErrorPage />;
 
@@ -110,7 +124,7 @@ export default function Edit(): React.ReactElement {
             </Button>
           }
         >
-          {infoBanner}
+          {activeReviewMessage ? reviewBanner : infoBanner}
 
           <Text variant="headingLg" as="h3">
             Preview
