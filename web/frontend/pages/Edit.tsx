@@ -43,8 +43,9 @@ export default function Edit(): React.ReactElement {
   const { id } = useParams<{ id: string }>();
 
   const openReviewDiag = () => {
-    if (true) {
+    if (!hasReviewed() && announcement?.enabled) {
       setActiveReviewMessage(true);
+      attemptReviewModal();
     }
   };
 
@@ -105,8 +106,6 @@ export default function Edit(): React.ReactElement {
                     tone: "success",
                   });
                   setActiveMessage(true);
-
-                  attemptReviewModal();
                 } else {
                   const json = await response.json();
                   setMessage({

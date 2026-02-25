@@ -1,4 +1,4 @@
-import { Banner, BannerTone, Link } from "@shopify/polaris";
+import { Banner, BannerTone, Button, Link } from "@shopify/polaris";
 import { Dispatch, SetStateAction, useState } from "react";
 
 export const ReviewMessage = (props: {
@@ -14,14 +14,10 @@ export const ReviewMessage = (props: {
       }}
     >
       Success! <br />
-      If you have a moment, we would appreciate your feedback on this app. <br />
-      <Link
-        //url="https://apps.shopify.com/your-app-handle#modal-show=WriteReviewModal"
-        url="https://example.com"
-        target="_blank"
-      >
+      If you have a moment, we would appreciate your feedback on this app.
+      <Button variant="primary" url="https://example.com" target="_blank">
         Leave feedback on the Shopify App Store
-      </Link>
+      </Button>
     </Banner>
   ) : null;
 };

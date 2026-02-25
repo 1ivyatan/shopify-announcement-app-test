@@ -4,6 +4,7 @@ export const attemptReviewModal = async () => {
   const shopify = useAppBridge();
   try {
     const result = await shopify.reviews.request();
+    localStorage.setItem("openedReview", "true");
     if (!result.success) {
       console.log(`Review modal not displayed. Reason: ${result.code}: ${result.message}`);
     }
